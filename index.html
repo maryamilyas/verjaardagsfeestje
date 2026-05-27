@@ -653,7 +653,7 @@
     <!-- GUEST SLIDER -->
     <div class="calc-header">
       <label>👥 Aantal gasten:</label>
-      <input type="range" class="guest-slider" id="guestSlider" min="5" max="60" value="24" oninput="updateCalc()">
+      <input type="range" class="guest-slider" id="guestSlider" min="5" max="60" value="24" oninput="updateCalc(); saveState()">
       <div class="guest-count-display" id="guestDisplay">24</div>
       <div style="font-size:0.8rem;color:var(--text-muted)">gasten</div>
     </div>
@@ -1487,6 +1487,14 @@ const personTasks = {
 
 let _syncTimer = null;
 
+function applyCalcState(data) {
+  if (data.meatKg) data.meatKg.forEach((kg, i) => { if (meats[i]) meats[i].kg = kg; });
+  if (data.guests) {
+    const slider = document.getElementById('guestSlider');
+    if (slider) slider.value = data.guests;
+  }
+}
+
 async function loadState() {
   try {
     const res = await fetch('/api/state');
@@ -1496,6 +1504,7 @@ async function loadState() {
       const storedP = data.ptodos || {};
       todos.forEach(t => { if (stored[t.id] !== undefined) t.done = stored[t.id]; });
       Object.values(personTasks).flat().forEach(t => { if (storedP[t.id] !== undefined) t.done = storedP[t.id]; });
+      applyCalcState(data);
       return;
     }
   } catch (e) {}
@@ -1504,20 +1513,26 @@ async function loadState() {
   const storedP = JSON.parse(localStorage.getItem('bbq-ptodos') || '{}');
   todos.forEach(t => { if (stored[t.id] !== undefined) t.done = stored[t.id]; });
   Object.values(personTasks).flat().forEach(t => { if (storedP[t.id] !== undefined) t.done = storedP[t.id]; });
+  const calcStored = JSON.parse(localStorage.getItem('bbq-calc') || '{}');
+  applyCalcState(calcStored);
 }
 
 function saveState() {
   const todos_s = {}, ptodos_s = {};
   todos.forEach(t => todos_s[t.id] = t.done);
   Object.values(personTasks).flat().forEach(t => ptodos_s[t.id] = t.done);
+  const guests = parseInt(document.getElementById('guestSlider')?.value || 24);
+  const meatKg = meats.map(m => m.kg);
+  const payload = { todos: todos_s, ptodos: ptodos_s, meatKg, guests };
   localStorage.setItem('bbq-todos', JSON.stringify(todos_s));
   localStorage.setItem('bbq-ptodos', JSON.stringify(ptodos_s));
+  localStorage.setItem('bbq-calc', JSON.stringify({ meatKg, guests }));
   clearTimeout(_syncTimer);
   _syncTimer = setTimeout(() => {
     fetch('/api/state', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ todos: todos_s, ptodos: ptodos_s })
+      body: JSON.stringify(payload)
     }).catch(() => {});
   }, 500);
 }
@@ -1676,6 +1691,7 @@ function changeKg(idx, delta) {
   meats[idx].kg = Math.max(0, Math.round((meats[idx].kg + delta) * 10) / 10);
   document.getElementById('kg-' + idx).textContent = meats[idx].kg + ' kg';
   updateCalc();
+  saveState();
 }
 
 function toggleRecipe(header) {
@@ -1689,6 +1705,7 @@ updateCalc();
 
 (async () => {
   await loadState();
+  updateCalc();
   renderTodos();
   renderPersonTasks();
 })();
