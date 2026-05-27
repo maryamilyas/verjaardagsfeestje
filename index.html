@@ -1485,20 +1485,41 @@ const personTasks = {
   ],
 };
 
-const stored = JSON.parse(localStorage.getItem('bbq-todos') || '{}');
-const storedP = JSON.parse(localStorage.getItem('bbq-ptodos') || '{}');
-todos.forEach(t => { if (stored[t.id] !== undefined) t.done = stored[t.id]; });
-Object.values(personTasks).flat().forEach(t => { if (storedP[t.id] !== undefined) t.done = storedP[t.id]; });
+let _syncTimer = null;
 
-function saveTodos() {
-  const s = {};
-  todos.forEach(t => s[t.id] = t.done);
-  localStorage.setItem('bbq-todos', JSON.stringify(s));
+async function loadState() {
+  try {
+    const res = await fetch('/api/state');
+    if (res.ok) {
+      const data = await res.json();
+      const stored = data.todos || {};
+      const storedP = data.ptodos || {};
+      todos.forEach(t => { if (stored[t.id] !== undefined) t.done = stored[t.id]; });
+      Object.values(personTasks).flat().forEach(t => { if (storedP[t.id] !== undefined) t.done = storedP[t.id]; });
+      return;
+    }
+  } catch (e) {}
+  // Fallback: localStorage
+  const stored = JSON.parse(localStorage.getItem('bbq-todos') || '{}');
+  const storedP = JSON.parse(localStorage.getItem('bbq-ptodos') || '{}');
+  todos.forEach(t => { if (stored[t.id] !== undefined) t.done = stored[t.id]; });
+  Object.values(personTasks).flat().forEach(t => { if (storedP[t.id] !== undefined) t.done = storedP[t.id]; });
 }
-function savePtodos() {
-  const s = {};
-  Object.values(personTasks).flat().forEach(t => s[t.id] = t.done);
-  localStorage.setItem('bbq-ptodos', JSON.stringify(s));
+
+function saveState() {
+  const todos_s = {}, ptodos_s = {};
+  todos.forEach(t => todos_s[t.id] = t.done);
+  Object.values(personTasks).flat().forEach(t => ptodos_s[t.id] = t.done);
+  localStorage.setItem('bbq-todos', JSON.stringify(todos_s));
+  localStorage.setItem('bbq-ptodos', JSON.stringify(ptodos_s));
+  clearTimeout(_syncTimer);
+  _syncTimer = setTimeout(() => {
+    fetch('/api/state', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ todos: todos_s, ptodos: ptodos_s })
+    }).catch(() => {});
+  }, 500);
 }
 
 function urgencyBadge(u) {
@@ -1548,7 +1569,7 @@ function renderTodos() {
 
 function toggleTodo(id) {
   const t = todos.find(x => x.id === id);
-  if (t && t.urgency !== 'done') { t.done = !t.done; saveTodos(); renderTodos(); }
+  if (t && t.urgency !== 'done') { t.done = !t.done; saveState(); renderTodos(); }
 }
 
 function renderPersonTasks() {
@@ -1569,7 +1590,7 @@ function renderPersonTasks() {
 
 function togglePtask(id, person) {
   const t = personTasks[person].find(x => x.id === id);
-  if (t) { t.done = !t.done; savePtodos(); renderPersonTasks(); }
+  if (t) { t.done = !t.done; saveState(); renderPersonTasks(); }
 }
 
 // ===== COLRUYT ICE CALCULATOR =====
@@ -1666,8 +1687,11 @@ function toggleRecipe(header) {
 
 updateCalc();
 
-renderTodos();
-renderPersonTasks();
+(async () => {
+  await loadState();
+  renderTodos();
+  renderPersonTasks();
+})();
 </script>
 </body>
 </html>
