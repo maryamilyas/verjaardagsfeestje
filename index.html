@@ -1468,6 +1468,12 @@ const todos = [
   { id:31, title:'🍞 Broodjes halen bij Erpa', urgency:'later', person:'alessio', personLabel:'Alessio', note:'Dag voor het feest — ±36–48 stuks', done:false },
   { id:32, title:'🥗 Groentjes snijden (namiddag)', urgency:'later', person:'mama', personLabel:'Mama + Mimi', note:'Dag voor het feest — samen in de namiddag', done:false },
   { id:33, title:'🥩 Vlees voorbereiden (eventueel)', urgency:'later', person:'mama', personLabel:'Mama + Mimi', note:'Dag voor het feest — marinade / klaarzetten indien nodig', done:false },
+  { id:35, title:'🥦 Vegetarische opties kopen bij AH', urgency:'normal', person:'maryam', personLabel:'Maryam', note:'Albert Heijn — veggie burgers, halloumi of andere alternatieven voor BBQ', done:false },
+  { id:36, title:'🪨 Houtskool + briketten kopen', urgency:'normal', person:'alessio', personLabel:'Alessio', note:'Voldoende voor ±4u BBQ voor 24 personen', done:false },
+  { id:37, title:'🔥 Aansteken zaken kopen', urgency:'normal', person:'alessio', personLabel:'Alessio', note:'Aansteker(s) + aanmaakblokjes voor de BBQ', done:false },
+  { id:38, title:'🍽️ Schalen voor BBQ warm te houden kopen (Action)', urgency:'normal', person:'maryam', personLabel:'Maryam', note:'Action — warmhoudschalen voor vlees/bijgerechten op tafel', done:false },
+  { id:39, title:'🍲 Schalen met warmhouders vragen aan Mama (2 stuks)', urgency:'soon', person:'mama', personLabel:'Mama', note:'Mama heeft 2 schalen met warmhouders — vragen om mee te brengen', done:false },
+  { id:40, title:'🕯️ Citronella kaarsjes kopen', urgency:'normal', person:'maryam', personLabel:'Maryam', note:'Tegen muggen/insecten buiten tijdens de BBQ', done:false },
 ];
 
 // Per-person tasks
@@ -1486,6 +1492,9 @@ const personTasks = {
     { id:'p10', title:'🥗 Pasta salade + gevulde eieren (dag ervoor)', urgency:'later', note:'', done:false },
     { id:'p12', title:'🎈 "30" ballonnen kopen bij Action', urgency:'normal', note:'Ballonnen met "30" erop — voor de versiering', done:false },
     { id:'p13', title:'🍽️ Bestek, borden & glazen kopen bij Action', urgency:'normal', note:'40 stuks per categorie — wegwerpbestek, borden én glazen', done:false },
+    { id:'p14', title:'🥦 Vegetarische opties kopen bij AH', urgency:'normal', note:'Albert Heijn — veggie burgers, halloumi of andere alternatieven voor BBQ', done:false },
+    { id:'p15', title:'🍽️ Warmhoudschalen kopen (Action)', urgency:'normal', note:'Voor vlees en bijgerechten warm te houden op tafel', done:false },
+    { id:'p16', title:'🕯️ Citronella kaarsjes kopen', urgency:'normal', note:'Tegen muggen/insecten buiten tijdens de BBQ', done:false },
   ],
   alessio: [
     { id:'a1', title:'🎀 Slinger "Happy Birthday" bestellen', urgency:'soon', note:'Grote variant voor over het terras', done:false },
@@ -1497,12 +1506,15 @@ const personTasks = {
     { id:'a7', title:'🛒 Colruyt — inkoop + ijsblokjes (CASTLE ICE)', urgency:'later', note:'Dag voor het feest — 8 zakken × 2kg ijsblokjes + eventuele boodschappen', done:false },
     { id:'a8', title:'🏕️ Tent helpen opzetten met Papa', urgency:'later', note:'Dag voor het feest — samen met papa opstellen', done:false },
     { id:'a9', title:'🍞 Broodjes halen bij Erpa', urgency:'later', note:'Dag voor het feest — ±36–48 stuks', done:false },
+    { id:'a10', title:'🪨 Houtskool + briketten kopen', urgency:'normal', note:'Voldoende voor ±4u BBQ voor 24 personen', done:false },
+    { id:'a11', title:'🔥 Aansteken zaken kopen', urgency:'normal', note:'Aansteker(s) + aanmaakblokjes', done:false },
   ],
   mama: [
     { id:'m1', title:'🪑 Stoelen uitlenen aan Maryam', urgency:'soon', note:'Checken hoeveel beschikbaar. Nodig: max ~15 stoelen totaal (ook Mimi vraagt)', done:false },
     { id:'m2', title:'🍽️ Borden/bestek uitlenen — niet meer nodig', urgency:'done', note:'Beslissing genomen: kopen bij Action (40 stuks per categorie)', done:true },
     { id:'m3', title:'🥗 Groentjes helpen snijden (namiddag)', urgency:'later', note:'Dag voor het feest — samen met Mimi in de namiddag', done:false },
     { id:'m4', title:'🥩 Vlees voorbereiden (eventueel)', urgency:'later', note:'Dag voor het feest — indien nodig helpen met marinade / klaarzetten', done:false },
+    { id:'m5', title:'🍲 Schalen met warmhouders meebrengen (2 stuks)', urgency:'soon', note:'Mama heeft 2 schalen met warmhouders — meebrengen naar het feest', done:false },
   ],
   mimi: [
     { id:'mi1', title:'🪑 Stoelen uitlenen aan Maryam', urgency:'soon', note:'Zoveel mogelijk — samen met mama aanvullen tot ~15 stoelen', done:false },
