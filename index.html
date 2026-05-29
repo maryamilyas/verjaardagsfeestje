@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎉 Maryam 30 — BBQ Dashboard</title>
+<style>
+  :root {
+    --yellow: #EDE5A0;
+    --yellow-mid: #D4C96A;
+    --yellow-dark: #6B5C0F;
+    --yellow-light: #FAFCED;
+    --blue: #AECDE0;
+    --blue-mid: #7AADC8;
+    --blue-dark: #1E5F7A;
+    --blue-light: #EDF5FB;
+    --white: #FFFFFF;
+    --bg: #F5F5F0;
+    --gray-light: #EFEFEB;
+    --gray: #9ca3af;
+    --border: #DEDAD0;
+    --text: #1A1A12;
+    --text-muted: #72725E;
+    --red: #dc2626;
+    --red-light: #fef2f2;
+    --orange: #c2410c;
+    --orange-light: #fff7ed;
+    --green: #166534;
+    --green-light: #f0fdf4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 26px 24px;
+    margin-bottom: 18px;
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--yellow-mid);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before { display: none; }
+  .hero h1 { font-size: 1.75rem; font-weight: 800; color: var(--text); margin-bottom: 4px; letter-spacing: -0.5px; }
+  .hero p { color: var(--text-muted); font-size: 0.9rem; }
+  .hero-stats { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
+  .stat-pill {
+    background: var(--gray-light);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    padding: 5px 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    display: flex; align-items: center; gap: 4px;
+  }
+  .pantone-chips { display: none !important; }
+
+  /* TABS */
+  .nav-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+    border-bottom: 2px solid var(--border);
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: all 0.14s;
+    display: flex; align-items: center; gap: 6px;
+    border-radius: 0;
+  }
+  .tab-btn:hover { color: var(--blue-dark); border-bottom-color: var(--blue-mid); }
+  .tab-btn.active { color: var(--blue-dark); border-bottom-color: var(--blue-dark); font-weight: 700; }
+
+  /* SECTIONS */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  @media (max-width: 860px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+  /* CARD */
+  .card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    border: 1px solid var(--border);
+  }
+  .card-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 7px;
+    color: var(--text);
+  }
+
+  /* BADGES */
+  .badge {
+    display: inline-flex; align-items: center; gap: 3px;
+    padding: 2px 8px;
+    border-radius: 50px;
+    font-size: 0.67rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .badge-urgent { background: var(--red-light); color: var(--red); }
+  .badge-soon { background: var(--orange-light); color: var(--orange); }
+  .badge-normal { background: var(--yellow-light); color: var(--yellow-dark); border: 1px solid #D8D385; }
+  .badge-later { background: var(--blue-light); color: var(--blue-dark); }
+  .badge-done { background: var(--green-light); color: var(--green); }
+
+  /* PERSON CHIPS */
+  .person {
+    display: inline-flex; align-items: center; gap: 3px;
+    padding: 2px 8px;
+    border-radius: 50px;
+    font-size: 0.67rem;
+    font-weight: 600;
+  }
+  .person-maryam { background: var(--yellow-light); color: var(--yellow-dark); border: 1px solid #D8D385; }
+  .person-alessio { background: var(--blue-light); color: var(--blue-dark); border: 1px solid var(--blue-mid); }
+  .person-ahmed { background: var(--green-light); color: var(--green); }
+  .person-mama { background: #fdf2f8; color: #9d174d; }
+  .person-mimi { background: #faf5ff; color: #6b21a8; }
+  .person-both { background: var(--gray-light); color: var(--text-muted); border: 1px solid var(--border); }
+  .person-papa { background: #fff7ed; color: var(--orange); border: 1px solid #fed7aa; }
+
+  /* TODO */
+  .todo-list { display: flex; flex-direction: column; gap: 5px; }
+  .todo-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 11px 14px;
+    border-radius: 8px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    transition: border-color 0.14s;
+  }
+  .todo-item:hover { border-color: var(--blue-mid); }
+  .todo-item.completed { opacity: 0.38; }
+  .todo-check {
+    width: 19px; height: 19px;
+    border-radius: 5px;
+    border: 1.5px solid #ccc;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.14s;
+    margin-top: 1px;
+  }
+  .todo-check.checked { background: var(--green); border-color: var(--green); }
+  .todo-check.checked::after { content: '¹3'; color: white; font-size: 11px; font-weight: 800; }
+  .todo-content { flex: 1; }
+  .todo-title { font-weight: 600; font-size: 0.87rem; margin-bottom: 5px; }
+  .todo-meta { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
+  .todo-note { font-size: 0.76rem; color: var(--text-muted); margin-top: 3px; }
+
+  /* COST TABLE */
+  .cost-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+  .cost-table th {
+    background: var(--gray-light);
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 0.69rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .cost-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); }
+  .cost-table tr:last-child td { border-bottom: none; }
+  .cost-table tr:hover td { background: var(--gray-light); }
+  .cost-total td { font-weight: 700; background: var(--yellow-light) !important; color: var(--yellow-dark); }
+  .cost-unknown { color: var(--orange); font-style: italic; }
+  .cost-amount { font-weight: 600; text-align: right; }
+
+  /* RECIPE CARDS */
+  .recipe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+  .recipe-card { background: var(--white); border-radius: 10px; padding: 16px; border: 1px solid var(--border); transition: all 0.14s; }
+  .recipe-card:hover { border-color: var(--blue-mid); box-shadow: 0 2px 8px rgba(30,95,122,0.08); }
+  .recipe-emoji { font-size: 1.6rem; margin-bottom: 7px; }
+  .recipe-name { font-weight: 700; font-size: 0.87rem; margin-bottom: 5px; }
+  .recipe-tag { display: inline-block; padding: 2px 8px; border-radius: 50px; font-size: 0.67rem; font-weight: 700; margin-bottom: 6px; }
+  .tag-cold { background: var(--blue-light); color: var(--blue-dark); }
+  .tag-hot { background: var(--red-light); color: var(--red); }
+  .tag-bbq { background: var(--orange-light); color: var(--orange); }
+  .tag-fish { background: var(--green-light); color: var(--green); }
+  .tag-dessert { background: var(--yellow-light); color: var(--yellow-dark); }
+  .recipe-qty { font-size: 0.76rem; color: var(--text-muted); margin-top: 4px; }
+  .recipe-tip { font-size: 0.74rem; background: var(--yellow-light); color: var(--yellow-dark); padding: 5px 9px; border-radius: 6px; margin-top: 6px; border: 1px solid #D8D385; }
+
+  /* DAY TIMELINE */
+  .day-section { margin-bottom: 22px; }
+  .day-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .day-bubble { background: var(--white); border: 1px solid var(--border); color: var(--text); border-radius: 50px; padding: 6px 16px; font-weight: 700; font-size: 0.83rem; white-space: nowrap; }
+  .day-line { flex: 1; height: 1px; background: var(--border); }
+  .timeline { display: flex; flex-direction: column; gap: 5px; padding-left: 4px; }
+  .time-slot { display: flex; gap: 12px; align-items: flex-start; }
+  .time-label { min-width: 60px; font-size: 0.72rem; font-weight: 700; color: var(--blue-dark); padding-top: 10px; }
+  .time-task { flex: 1; background: var(--white); border-radius: 8px; padding: 9px 13px; border: 1px solid var(--border); font-size: 0.84rem; }
+  .time-task strong { display: block; font-weight: 600; margin-bottom: 2px; }
+  .time-task span { color: var(--text-muted); font-size: 0.76rem; }
+
+  /* STATS ROW */
+  .stats-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; margin-bottom: 18px; }
+  .stat-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px 12px; text-align: center; }
+  .stat-icon { font-size: 1.5rem; margin-bottom: 4px; }
+  .stat-value { font-size: 1.35rem; font-weight: 800; color: var(--blue-dark); }
+  .stat-label { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
+
+  /* GUEST */
+  .guest-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(115px, 1fr)); gap: 8px; }
+  .guest-chip { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 10px; text-align: center; font-size: 0.81rem; font-weight: 500; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; margin: 0 auto 5px; font-weight: 800; }
+  .avatar-family { background: var(--yellow-light); color: var(--yellow-dark); border: 1px solid #D8D385; }
+  .avatar-friend { background: var(--blue-light); color: var(--blue-dark); border: 1px solid var(--blue); }
+  .avatar-host { background: var(--yellow-mid); color: var(--text); }
+  .guest-type { font-size: 0.67rem; color: var(--text-muted); margin-top: 2px; }
+
+  /* SECTION HEADER */
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+  .section-header h2 { font-size: 1.15rem; font-weight: 800; color: var(--text); }
+  .count-badge { background: var(--yellow-light); color: var(--yellow-dark); border: 1px solid #D8D385; border-radius: 50px; padding: 3px 10px; font-size: 0.72rem; font-weight: 700; }
+
+  /* VLEES CALCULATOR */
+  .calc-header { background: var(--gray-light); border-radius: 10px; padding: 14px 18px; margin-bottom: 14px; border: 1px solid var(--border); display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .calc-header label { font-weight: 700; font-size: 0.86rem; white-space: nowrap; }
+  .guest-slider { -webkit-appearance: none; appearance: none; flex: 1; min-width: 120px; height: 5px; border-radius: 50px; background: linear-gradient(90deg, var(--yellow-mid), var(--blue-mid)); outline: none; cursor: pointer; }
+  .guest-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--white); border: 2px solid var(--blue-mid); box-shadow: 0 1px 4px rgba(0,0,0,0.12); cursor: pointer; }
+  .guest-count-display { background: var(--blue-dark); color: var(--white); border-radius: 50px; padding: 6px 16px; font-size: 1.15rem; font-weight: 900; min-width: 56px; text-align: center; }
+  .meat-calc-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+  .meat-calc-table th { background: var(--gray-light); padding: 8px 11px; text-align: left; font-weight: 700; font-size: 0.69rem; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+  .meat-calc-table td { padding: 9px 11px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .meat-calc-table tr:last-child td { border-bottom: none; }
+  .meat-calc-table tr.total-row td { font-weight: 700; background: var(--yellow-light); }
+  .stuks-control { display: flex; align-items: center; gap: 5px; }
+  .stuks-btn { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--border); background: var(--white); cursor: pointer; font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; justify-content: center; line-height: 1; transition: all 0.12s; color: var(--text); }
+  .stuks-btn:hover { border-color: var(--blue-mid); background: var(--blue-light); }
+  .stuks-val { min-width: 26px; text-align: center; font-weight: 700; font-size: 0.9rem; }
+  .calc-total-val { font-weight: 700; color: var(--blue-dark); }
+  .calc-kg-val { color: var(--text-muted); font-size: 0.79rem; }
+  .calc-cost-val { font-weight: 600; color: var(--green); }
+  .cost-unknown-val { color: var(--orange); font-style: italic; }
+  .summary-pills { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .summary-pill { background: var(--gray-light); border: 1px solid var(--border); border-radius: 50px; padding: 5px 13px; font-size: 0.78rem; font-weight: 600; display: flex; gap: 5px; align-items: center; }
+
+  /* MOCKTAIL OPTIONS */
+  .option-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
+  @media (max-width: 700px) { .option-cards { grid-template-columns: 1fr; } }
+  .option-card { border-radius: 10px; padding: 14px; border: 1px solid var(--border); background: var(--white); }
+  .option-card.best { border-color: var(--green); background: var(--green-light); }
+  .option-card.mid { border-color: var(--yellow-mid); background: var(--yellow-light); }
+  .option-card.premium { border-color: var(--blue-mid); background: var(--blue-light); }
+  .option-title { font-weight: 700; font-size: 0.87rem; margin-bottom: 5px; }
+  .option-price { font-size: 1.1rem; font-weight: 800; margin: 5px 0; }
+  .option-desc { font-size: 0.75rem; color: var(--text-muted); }
+
+  /* PERSON BLOCKS */
+  .person-block { background: var(--white); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 12px; }
+  .person-block-header { padding: 14px 18px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); background: var(--gray-light); }
+  .person-avatar-big { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; font-weight: 900; flex-shrink: 0; }
+  .avatar-big-maryam { background: var(--yellow-mid); color: var(--text); }
+  .avatar-big-alessio { background: var(--blue-dark); color: white; }
+  .avatar-big-mama { background: #f9a8d4; color: #9d174d; }
+  .avatar-big-mimi { background: #d8b4fe; color: #6b21a8; }
+  .avatar-big-ahmed { background: #86efac; color: #166534; }
+  .avatar-big-papa { background: #fcd34d; color: #78350f; }
+  .person-name { font-size: 0.97rem; font-weight: 800; }
+  .person-role { font-size: 0.75rem; color: var(--text-muted); }
+  .person-tasks { padding: 12px 18px; display: flex; flex-direction: column; gap: 7px; }
+  .ptask { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; background: var(--white); border-radius: 7px; border: 1px solid var(--border); }
+  .ptask-check { width: 18px; height: 18px; border-radius: 4px; border: 1.5px solid #ccc; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.14s; margin-top: 1px; }
+  .ptask-check.checked { background: var(--green); border-color: var(--green); }
+  .ptask-check.checked::after { content: '¹3'; color: white; font-size: 10px; font-weight: 800; }
+  .ptask-body { flex: 1; }
+  .ptask-title { font-weight: 600; font-size: 0.85rem; }
+  .ptask-note { font-size: 0.74rem; color: var(--text-muted); margin-top: 2px; }
+  .ptask-urgency { margin-top: 4px; }
+
+  /* RECIPE ACCORDION */
+  .r-card { background: var(--white); border-radius: 10px; border: 1px solid var(--border); margin-bottom: 8px; overflow: hidden; }
+  .r-header { display: flex; align-items: center; gap: 12px; padding: 13px 16px; cursor: pointer; user-select: none; }
+  .r-header:hover { background: var(--gray-light); }
+  .r-emoji { font-size: 1.6rem; flex-shrink: 0; }
+  .r-meta { flex: 1; }
+  .r-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 3px; }
+  .r-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+  .r-arrow { font-size: 0.85rem; color: var(--text-muted); transition: transform 0.18s; }
+  .r-arrow.open { transform: rotate(180deg); }
+  .r-body { padding: 0 16px 16px; display: none; }
+  .r-body.open { display: block; }
+  .r-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 10px; }
+  @media(max-width:700px){ .r-cols { grid-template-columns: 1fr; } }
+  .r-ingr h4, .r-steps h4 { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-muted); margin-bottom: 7px; }
+  .r-ingr ul { list-style: none; padding: 0; }
+  .r-ingr li { padding: 4px 0; border-bottom: 1px solid var(--border); font-size: 0.83rem; display: flex; justify-content: space-between; }
+  .r-ingr li:last-child { border-bottom: none; }
+  .r-ingr li span { color: var(--text-muted); font-size: 0.77rem; }
+  .r-steps ol { padding-left: 16px; }
+  .r-steps li { padding: 4px 0; font-size: 0.83rem; line-height: 1.5; }
+  .r-warn { background: var(--orange-light); border: 1px solid #fed7aa; border-radius: 7px; padding: 8px 12px; font-size: 0.78rem; color: var(--orange); margin-top: 10px; font-weight: 600; }
+  .r-ok { background: var(--green-light); border: 1px solid #bbf7d0; border-radius: 7px; padding: 8px 12px; font-size: 0.78rem; color: var(--green); margin-top: 10px; font-weight: 600; }
+  .r-timing { background: var(--yellow-light); border: 1px solid #D8D385; border-radius: 7px; padding: 7px 12px; font-size: 0.77rem; color: var(--yellow-dark); display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+  .bbq-tip { background: var(--blue-light); border-radius: 7px; padding: 9px 12px; font-size: 0.8rem; margin-top: 10px; border: 1px solid var(--blue); }
+
+  /* FOOTER */
+  .footer-note { text-align: center; color: var(--text-muted); font-size: 0.72rem; margin-top: 22px; padding-top: 12px; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="pantone-chips">
+    <div class="pantone-chip">
+      <div class="pantone-color" style="background:#EDE5A0;"></div>
+      <div class="pantone-label"><div class="brand">PANTONE®</div><div class="name">11-0616 TCX<br>Pastel Yellow</div></div>
+    </div>
+    <div class="pantone-chip">
+      <div class="pantone-color" style="background:#AECDE0;"></div>
+      <div class="pantone-label"><div class="brand">PANTONE®</div><div class="name">13-4320 TSX<br>Polar Wind</div></div>
+    </div>
+  </div>
+  <h1>🎂 Maryam wordt 30!</h1>
+  <p>BBQ feestje in de tuin · Planning & Overzicht</p>
+  <div class="hero-stats">
+    <div class="stat-pill">👥 24 gasten</div>
+    <div class="stat-pill">🥩 8,6 kg vlees</div>
+    <div class="stat-pill">🎂 4 taarten</div>
+    <div class="stat-pill">💰 ~€470+ budget</div>
+    <div class="stat-pill">📍 Yildrim voor vlees</div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="nav-tabs">
+  <button class="tab-btn active" onclick="showTab('todos', this)">✅ To-do's</button>
+  <button class="tab-btn" onclick="showTab('personen', this)">👤 Per persoon</button>
+  <button class="tab-btn" onclick="showTab('kosten', this)">💰 Kosten</button>
+  <button class="tab-btn" onclick="showTab('menu', this)">🍽️ Menu & Recepten</button>
+  <button class="tab-btn" onclick="showTab('dagen', this)">📅 Taken per dag</button>
+  <button class="tab-btn" onclick="showTab('gasten', this)">👥 Gasten</button>
+</div>
+
+<!-- ========================= TODO ========================= -->
+<div id="tab-todos" class="section active">
+  <div class="section-header">
+    <h2>✅ To-do's</h2>
+    <span class="count-badge" id="todo-count">laden...</span>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-icon">🚨</div><div class="stat-value" id="cnt-urgent">-</div><div class="stat-label">Dringend</div></div>
+    <div class="stat-card"><div class="stat-icon">⚡</div><div class="stat-value" id="cnt-soon">-</div><div class="stat-label">Snel doen</div></div>
+    <div class="stat-card"><div class="stat-icon">📌</div><div class="stat-value" id="cnt-normal">-</div><div class="stat-label">Normaal</div></div>
+    <div class="stat-card"><div class="stat-icon">🕐</div><div class="stat-value" id="cnt-later">-</div><div class="stat-label">Dag zelf</div></div>
+    <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value" id="cnt-done">-</div><div class="stat-label">Afgerond</div></div>
+  </div>
+  <div class="card" style="margin-bottom:16px; border-left:3px solid var(--red);">
+    <div class="card-title">🚨 Dringend</div>
+    <div class="todo-list" id="list-urgent"></div>
+  </div>
+  <div class="card" style="margin-bottom:16px; border-left:3px solid var(--orange);">
+    <div class="card-title">⚡ Snel doen — binnen 1–2 weken</div>
+    <div class="todo-list" id="list-soon"></div>
+  </div>
+  <div class="card" style="margin-bottom:16px; border-left:3px solid var(--yellow-mid);">
+    <div class="card-title">📌 Normaal — week voor het feest</div>
+    <div class="todo-list" id="list-normal"></div>
+  </div>
+  <div class="card" style="margin-bottom:16px; border-left:3px solid var(--blue-mid);">
+    <div class="card-title">🕐 Dag voor/van het feest</div>
+    <div class="todo-list" id="list-later"></div>
+  </div>
+  <div class="card" style="margin-bottom:16px; border-left:3px solid var(--green);">
+    <div class="card-title">✅ Afgerond</div>
+    <div class="todo-list" id="list-done"></div>
+  </div>
+</div>
+
+<!-- ========================= PER PERSOON ========================= -->
+<div id="tab-personen" class="section">
+  <div class="section-header">
+    <h2>👤 Taken per persoon</h2>
+    <span class="count-badge">6 mensen</span>
+  </div>
+
+  <!-- MARYAM -->
+  <div class="person-block">
+    <div class="person-block-header">
+      <div class="person-avatar-big avatar-big-maryam">M</div>
+      <div>
+        <div class="person-name">Maryam 🎂</div>
+        <div class="person-role">Verjaardagskind & organisator</div>
+      </div>
+    </div>
+    <div class="person-tasks" id="ptasks-maryam"></div>
+  </div>
+
+  <!-- ALESSIO -->
+  <div class="person-block">
+    <div class="person-block-header">
+      <div class="person-avatar-big avatar-big-alessio">A</div>
+      <div>
+        <div class="person-name">Alessio</div>
+        <div class="person-role">Gastgezin — versiering & logistiek</div>
+      </div>
+    </div>
+    <div class="person-tasks" id="ptasks-alessio"></div>
+  </div>
+
+  <!-- MAMA -->
+  <div class="person-block">
+    <div class="person-block-header">
+      <div class="person-avatar-big avatar-big-mama">👩</div>
+      <div>
+        <div class="person-name">Mama</div>
+        <div class="person-role">Maryam's mama — vragen om te helpen</div>
+      </div>
+    </div>
+    <div class="person-tasks" id="ptasks-mama"></div>
+  </div>
+
+  <!-- MIMI -->
+  <div class="person-block">
+    <div class="person-block-header">
+      <div class="person-avatar-big avatar-big-mimi">👵</div>
+      <div>
+        <div class="person-name">Mimi</div>
+        <div class="person-role">Schoonmoeder — vragen om te helpen</div>
+      </div>
+    </div>
+    <div class="person-tasks" id="ptasks-mimi"></div>
+  </div>
+
+  <!-- AHMED -->
+  <div class="person-block">
+    <div class="person-block-header">
+      <div class="person-avatar-big avatar-big-ahmed">A</div>
+      <div>
+        <div class="person-name">Ahmed</div>
+        <div class="person-role">Familie — speaker meebrengen</div>
+      </div>
+    </div>
+    <div class="person-tasks" id="ptasks-ahmed"></div>
+  </div>
+
+  <!-- PAPA -->
+  <div class="person-block">
+    <div class="person-block-header">
+      <div class="person-avatar-big avatar-big-papa">👨</div>
+      <div>
+        <div class="person-name">Papa</div>
+        <div class="person-role">Maryam's papa — tent opzetten dag voor het feest</div>
+      </div>
+    </div>
+    <div class="person-tasks" id="ptasks-papa"></div>
+  </div>
+
+  <div style="background:var(--blue-light); border:1.5px solid var(--blue); border-radius:14px; padding:16px 20px; font-size:0.85rem; color:var(--blue-dark); margin-top:6px;">
+    💡 <strong>Tip:</strong> Stuur een berichtje naar Mama en Mimi met een duidelijk lijstje wat je nodig hebt + wanneer je het nodig hebt. Zo weten ze precies wat van hen verwacht wordt!
+  </div>
+</div>
+
+<!-- ========================= KOSTEN ========================= -->
+<div id="tab-kosten" class="section">
+  <div class="section-header"><h2>💰 Kostenanalyse</h2></div>
+  <!-- VLEES CALCULATOR — full width -->
+  <div class="card" style="margin-bottom:18px; border:1px solid var(--border);">
+    <div class="card-title">🥩 Vlees calculator — Yildrim</div>
+
+    <!-- GUEST SLIDER -->
+    <div class="calc-header">
+      <label>👥 Aantal gasten:</label>
+      <input type="range" class="guest-slider" id="guestSlider" min="5" max="60" value="24" oninput="updateCalc(); saveState()">
+      <div class="guest-count-display" id="guestDisplay">24</div>
+      <div style="font-size:0.8rem;color:var(--text-muted)">gasten</div>
+    </div>
+
+    <!-- MEAT TABLE -->
+    <div style="overflow-x:auto">
+    <table class="meat-calc-table" id="meatTable">
+      <thead>
+        <tr>
+          <th>Vleessoort</th>
+          <th>Kg (aanpasbaar)</th>
+          <th style="text-align:center">Geschatte stuks</th>
+          <th style="text-align:right">Prijs/kg</th>
+          <th style="text-align:right">Totaalprijs</th>
+        </tr>
+      </thead>
+      <tbody id="meatRows"></tbody>
+    </table>
+    </div>
+
+    <!-- SUMMARY PILLS -->
+    <div class="summary-pills">
+      <div class="summary-pill">🍖 Totaal stuks: <strong id="sumStuks">—</strong></div>
+      <div class="summary-pill">⚖️ Totaal kg: <strong id="sumKg">—</strong></div>
+      <div class="summary-pill">💰 Geschat totaal: <strong id="sumKost">—</strong></div>
+      <div class="summary-pill" style="background:var(--orange-light);border-color:var(--orange);color:var(--orange)">⚠️ Mergueze prijs onbekend — niet inbegrepen</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:18px">
+    <div class="card">
+      <div class="card-title">🎂 Taarten — Patisserie</div>
+      <table class="cost-table">
+        <thead><tr><th>Taart</th><th>Prijs</th></tr></thead>
+        <tbody>
+          <tr><td>Speculaas cheesecake</td><td class="cost-amount">€36</td></tr>
+          <tr><td>Walnoot-kaneelcake</td><td class="cost-amount">€38</td></tr>
+          <tr><td>Italiaanse pistachecake met ricotta</td><td class="cost-amount">€45</td></tr>
+          <tr><td>Citroen yoghurtcake</td><td class="cost-amount">€38</td></tr>
+          <tr class="cost-total"><td>Totaal (48 porties)</td><td class="cost-amount">€157</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="grid-2" style="margin-bottom:18px">
+    <div class="card">
+      <div class="card-title">🥤 Dranken — Prik & Tik</div>
+      <table class="cost-table">
+        <thead><tr><th>Drank</th><th>Hoeveelheid</th><th>Geschat</th></tr></thead>
+        <tbody>
+          <tr><td>💧 Water (plat)</td><td>20L</td><td class="cost-amount">~€8</td></tr>
+          <tr><td>🥤 Cola</td><td>6L</td><td class="cost-amount">~€6</td></tr>
+          <tr><td>🍊 Fanta/Orange</td><td>6L</td><td class="cost-amount">~€6</td></tr>
+          <tr><td>🟢 Sprite/7Up</td><td>4L</td><td class="cost-amount">~€4</td></tr>
+          <tr><td>🍵 IJsthee</td><td>4L</td><td class="cost-amount">~€4</td></tr>
+          <tr><td>🍊 Sinaasappelsap</td><td>6L</td><td class="cost-amount">~€9</td></tr>
+          <tr><td>💦 Bruiswater</td><td>6L</td><td class="cost-amount">~€5</td></tr>
+          <tr class="cost-total"><td colspan="2">Totaal dranken</td><td class="cost-amount">~€42</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">🍹 Mocktails — Kies optie</div>
+      <div class="option-cards">
+        <div class="option-card best">
+          <div class="option-title">✅ Optie 1 — Funny</div>
+          <div class="option-price">±€81</div>
+          <div class="option-desc">6× Funny bij Prik & Tik. Zelf mixen. 💚 Goedkoopste!</div>
+        </div>
+        <div class="option-card mid">
+          <div class="option-title">⚖️ Optie 3 — Combi</div>
+          <div class="option-price">±€100</div>
+          <div class="option-desc">Mocktail Club + Funny. Check thuis voorraad!</div>
+        </div>
+        <div class="option-card premium">
+          <div class="option-title">✨ Optie 2 — Club</div>
+          <div class="option-price">±€168</div>
+          <div class="option-desc">2× Discovery Bundle. Kant-en-klaar premium.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="border:1px solid var(--border)">
+    <div class="card-title">📊 Totaalbudget</div>
+    <table class="cost-table">
+      <thead><tr><th>Categorie</th><th>Min</th><th>Max</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>🥩 Vlees (excl. mergueze)</td><td class="cost-amount">€105</td><td class="cost-amount">€105</td><td><span class="badge badge-soon">Nog bestellen</span></td></tr>
+        <tr><td>🌭 Mergueze</td><td class="cost-amount cost-unknown">?</td><td class="cost-amount cost-unknown">?</td><td><span class="badge badge-urgent">Prijs opvragen!</span></td></tr>
+        <tr><td>🎂 Taarten</td><td class="cost-amount">€157</td><td class="cost-amount">€157</td><td><span class="badge badge-urgent">Nog bestellen!</span></td></tr>
+        <tr><td>🥤 Dranken</td><td class="cost-amount">€42</td><td class="cost-amount">€42</td><td><span class="badge badge-normal">Te kopen</span></td></tr>
+        <tr><td>🍹 Mocktails (opt. 1–2)</td><td class="cost-amount">€81</td><td class="cost-amount">€168</td><td><span class="badge badge-urgent">Beslissing!</span></td></tr>
+        <tr><td>🐟 Vis (scampi + zalm)</td><td class="cost-amount">~€25</td><td class="cost-amount">~€35</td><td><span class="badge badge-normal">Te kopen</span></td></tr>
+        <tr><td>🛒 Colruyt — salades, sauzen & snacks (do)</td><td class="cost-amount">~€110</td><td class="cost-amount">~€110</td><td><span class="badge badge-normal">🗓️ Donderdag</span></td></tr>
+        <tr><td>🧊 Colruyt — ijsblokjes CASTLE ICE (vr)</td><td class="cost-amount">~€14</td><td class="cost-amount">~€14</td><td><span class="badge badge-later">🗓️ Vrijdag</span></td></tr>
+        <tr><td>🍞 Broodjes + chips/snacks</td><td class="cost-amount">~€15</td><td class="cost-amount">~€20</td><td><span class="badge badge-normal">Te kopen</span></td></tr>
+        <tr><td>🎨 Versiering (Alessio)</td><td class="cost-amount">~€20</td><td class="cost-amount">~€40</td><td><span class="badge badge-soon">Alessio regelt</span></td></tr>
+        <tr class="cost-total"><td>💰 TOTAAL (excl. mergueze)</td><td class="cost-amount">~€542</td><td class="cost-amount">~€629</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+  <!-- COLRUYT BOODSCHAPPENLIJST -->
+  <div class="card" style="margin-top:18px; border:1px solid var(--border);">
+    <div class="card-title">🛒 Colruyt boodschappenlijst</div>
+    <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+      <div style="background:var(--yellow-light);border:1.5px solid var(--yellow-mid);border-radius:50px;padding:8px 18px;font-size:0.85rem;font-weight:700;">🗓️ Donderdag — salades, sauzen, snacks & ingrediënten (~€110)</div>
+      <div style="background:var(--blue-light);border:1.5px solid var(--blue);border-radius:50px;padding:8px 18px;font-size:0.85rem;font-weight:700;">🗓️ Vrijdag — ijsblokjes (~€14)</div>
+    </div>
+
+    <!-- DONDERDAG -->
+    <div style="font-weight:800;font-size:0.9rem;margin-bottom:10px;color:var(--yellow-dark);">📦 Donderdag — Maryam alleen</div>
+    <table class="cost-table" style="margin-bottom:20px">
+      <thead><tr><th>Product</th><th>Merk / specificatie</th><th>Hoeveelheid</th><th style="text-align:right">~Prijs</th><th>✓</th></tr></thead>
+      <tbody>
+        <tr style="background:var(--yellow-light)"><td colspan="5" style="font-weight:700;font-size:0.8rem;color:var(--yellow-dark);padding:8px 14px;">🍝 Pasta salade</td></tr>
+        <tr><td>Pasta (fusilli of penne)</td><td>BONI of Barilla 500g</td><td>2 pakken</td><td class="cost-amount">~€3,00</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Pesto verde</td><td><a href="https://www.colruyt.be/nl/producten/2762" target="_blank" style="color:var(--blue-dark)">BONI Pesto verde 190g</a></td><td>2 potjes</td><td class="cost-amount">~€4,00</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Kerstomaten</td><td>BONI 250g bakje</td><td>3 bakjes</td><td class="cost-amount">~€6,00</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Rucola</td><td><a href="https://www.colruyt.be/nl/producten/42376" target="_blank" style="color:var(--blue-dark)">BONI rucola 100g</a></td><td>2 zakjes</td><td class="cost-amount">~€3,00</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+
+        <tr style="background:var(--yellow-light)"><td colspan="5" style="font-weight:700;font-size:0.8rem;color:var(--yellow-dark);padding:8px 14px;">🍅 Caprese</td></tr>
+        <tr><td>Mozzarella mini (bolletjes)</td><td><a href="https://www.colruyt.be/nl/producten/p-16663" target="_blank" style="color:var(--blue-dark)">BONI mozzarella mini 150g</a></td><td>2 potten</td><td class="cost-amount">~€4,00</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Verse basilicum</td><td>Potje (niet gesneden)</td><td>2 potjes</td><td class="cost-amount">~€3,00</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Balsamico azijn</td><td>BONI of Maille</td><td>1 fles</td><td class="cost-amount">~€2,50</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Olijfolie</td><td>BONI 750ml (check thuis!)</td><td>1 fles</td><td class="cost-amount">~€4,99</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+
+        <tr style="background:var(--yellow-light)"><td colspan="5" style="font-weight:700;font-size:0.8rem;color:var(--yellow-dark);padding:8px 14px;">🥒 Komkommer-feta salade</td></tr>
+        <tr><td>IJsbergsla of romaine</td><td>Krop</td><td>2 kroppen</td><td class="cost-amount">~€2,00</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Komkommer</td><td>Stuk</td><td>2 stuks</td><td class="cost-amount">~€2,00</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Feta kaas</td><td><a href="https://www.colruyt.be/nl/producten/13543" target="_blank" style="color:var(--blue-dark)">SALAKIS feta classic</a> 200g</td><td>2 pakken</td><td class="cost-amount">~€6,00</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Citroenen</td><td>Los of netje</td><td>3 stuks</td><td class="cost-amount">~€1,50</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+
+        <tr style="background:var(--yellow-light)"><td colspan="5" style="font-weight:700;font-size:0.8rem;color:var(--yellow-dark);padding:8px 14px;">🥔 Krieltjes dille & parmezaan</td></tr>
+        <tr><td>Krieltjes</td><td><a href="https://www.colruyt.be/nl/producten/28818" target="_blank" style="color:var(--blue-dark)">BONI krielaardappelen</a></td><td>3 kg</td><td class="cost-amount">~€4,50</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Verse dille</td><td>Bakje/zakje</td><td>1 bakje</td><td class="cost-amount">~€1,49</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Parmezaan geraspt</td><td><a href="https://www.colruyt.be/nl/producten/36185" target="_blank" style="color:var(--blue-dark)">PARMAREGGIO parmezaan</a></td><td>1 pak</td><td class="cost-amount">~€3,00</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+
+        <tr style="background:var(--yellow-light)"><td colspan="5" style="font-weight:700;font-size:0.8rem;color:var(--yellow-dark);padding:8px 14px;">🍉 Watermeloen + oven-groenten + eieren</td></tr>
+        <tr><td>Watermeloen</td><td>Groot (heel)</td><td>1 stuk</td><td class="cost-amount">~€4,00</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Eieren</td><td>12 stuks</td><td>2 dozen</td><td class="cost-amount">~€6,00</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Mayonaise</td><td><a href="https://www.colruyt.be/nl/producten/13334" target="_blank" style="color:var(--blue-dark)">ECONOM mayonaise</a> (groot)</td><td>1 pot</td><td class="cost-amount">~€3,49</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Mosterd</td><td>BONI of Bister</td><td>1 tube</td><td class="cost-amount">~€1,29</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Rode paprika's</td><td>Los</td><td>2 stuks</td><td class="cost-amount">~€2,50</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Gele paprika</td><td>Los</td><td>1 stuk</td><td class="cost-amount">~€1,25</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Groene paprika</td><td>Los</td><td>1 stuk</td><td class="cost-amount">~€0,99</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Courgettes</td><td>Los</td><td>3 stuks</td><td class="cost-amount">~€3,00</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Aubergines</td><td>Los</td><td>3 stuks</td><td class="cost-amount">~€3,87</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Knoflook</td><td>Bol</td><td>1 bol (check thuis!)</td><td class="cost-amount">~€0,79</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+
+        <tr style="background:var(--yellow-light)"><td colspan="5" style="font-weight:700;font-size:0.8rem;color:var(--yellow-dark);padding:8px 14px;">🍹 Mocktail garnering</td></tr>
+        <tr><td>Verse munt</td><td>Zakje</td><td>2 zakjes</td><td class="cost-amount">~€3,00</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Limoenen</td><td>Los</td><td>4 stuks</td><td class="cost-amount">~€2,00</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Sinaasappelen</td><td>Netje</td><td>6 stuks</td><td class="cost-amount">~€2,99</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Verse rozemarijn</td><td>Zakje</td><td>1 zakje</td><td class="cost-amount">~€1,29</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Granaatappel</td><td>Los</td><td>2 stuks</td><td class="cost-amount">~€3,98</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Kaneelpoeder</td><td>(check thuis!)</td><td>1 potje indien nodig</td><td class="cost-amount">~€1,49</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+
+        <tr style="background:var(--yellow-light)"><td colspan="5" style="font-weight:700;font-size:0.8rem;color:var(--yellow-dark);padding:8px 14px;">🥫 Sauzen & dips</td></tr>
+        <tr><td>Ketchup</td><td>Check thuis! Niet kopen indien nog voldoende</td><td>1 fles</td><td class="cost-amount cost-unknown">thuis!</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Mayonaise</td><td><a href="https://www.colruyt.be/nl/producten/13334" target="_blank" style="color:var(--blue-dark)">ECONOM mayonaise</a> groot — staat al in lijst ↑</td><td>check hoeveelheid</td><td class="cost-amount cost-unknown">al in lijst</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Cocktailsaus</td><td>BONI of Devos-Lemmens</td><td>1 pot</td><td class="cost-amount">~€2,49</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+
+        <tr style="background:var(--yellow-light)"><td colspan="5" style="font-weight:700;font-size:0.8rem;color:var(--yellow-dark);padding:8px 14px;">🫙 Ingrediënten tzatziki & tarama — Mimi maakt!</td></tr>
+        <tr><td>Griekse yoghurt (500g)</td><td>FAGE of ALPRO Griekse stijl</td><td>2 bakjes</td><td class="cost-amount">~€3,00</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Tarama (gezouten kuit)</td><td>Potje — deli/vis afdeling</td><td>1 potje (~200g)</td><td class="cost-amount">~€4,50</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Kleine ui</td><td>Los</td><td>1 stuk</td><td class="cost-amount">~€0,30</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Komkommer</td><td>Staat al in lijst ↑ (2 stuks)</td><td>—</td><td class="cost-amount cost-unknown">al in lijst</td><td></td></tr>
+        <tr><td>Verse dille</td><td>Staat al in lijst ↑</td><td>—</td><td class="cost-amount cost-unknown">al in lijst</td><td></td></tr>
+        <tr><td>Knoflook + citroenen + olijfolie</td><td>Staat al in lijst ↑</td><td>—</td><td class="cost-amount cost-unknown">al in lijst</td><td></td></tr>
+        <tr><td>Witbrood (sneetjes voor tarama)</td><td>Check thuis</td><td>2–3 sneetjes</td><td class="cost-amount cost-unknown">thuis!</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+
+        <tr style="background:var(--yellow-light)"><td colspan="5" style="font-weight:700;font-size:0.8rem;color:var(--yellow-dark);padding:8px 14px;">🫒 Voorgerecht — olijven & droge snacks</td></tr>
+        <tr><td>Olijven gemengd</td><td>Bakje of pot (ontpit)</td><td>2–3 bakjes</td><td class="cost-amount">~€6,00</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Noten (cashews of gemengd)</td><td>BONI of huismerk zak</td><td>1–2 zakken</td><td class="cost-amount">~€5,00</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+        <tr><td>Chips / crackers / grissini</td><td>Naar keuze — 2 soorten</td><td>2 pakken</td><td class="cost-amount">~€6,00</td><td><input type="checkbox" style="width:16px;height:16px;cursor:pointer" onchange="updateColruytTotal()"></td></tr>
+
+        <tr style="background:var(--green-light);font-weight:800">
+          <td colspan="3">✅ Totaal donderdag Colruyt</td>
+          <td class="cost-amount" id="colruyt-do-total">~€110</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- VRIJDAG -->
+    <div style="font-weight:800;font-size:0.9rem;margin-bottom:10px;color:var(--blue-dark);">🧊 Vrijdag — IJsblokjes ophalen bij Colruyt</div>
+    <table class="cost-table">
+      <thead><tr><th>Product</th><th>Merk / specificatie</th><th>Hoeveelheid</th><th style="text-align:right">~Prijs</th><th>✓</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><a href="https://www.colruyt.be/nl/producten/8471" target="_blank" style="color:var(--blue-dark);font-weight:700">🧊 CASTLE ICE ijsblokjes 2kg</a></td>
+          <td>Diepvries — zak van 2 kg</td>
+          <td>
+            <div style="display:flex;align-items:center;gap:8px">
+              <button class="stuks-btn" onclick="changeIce(-1)">−</button>
+              <span id="ice-qty" style="font-weight:800;min-width:20px;text-align:center">8</span>
+              <button class="stuks-btn" onclick="changeIce(+1)">+</button>
+              <span style="color:var(--text-muted);font-size:0.8rem">zakken (<span id="ice-kg">16</span> kg totaal)</span>
+            </div>
+          </td>
+          <td class="cost-amount" id="ice-cost">~€14</td>
+          <td><input type="checkbox" style="width:16px;height:16px;cursor:pointer"></td>
+        </tr>
+        <tr style="background:var(--blue-light);font-weight:800">
+          <td colspan="3">✅ Totaal vrijdag Colruyt</td>
+          <td class="cost-amount" id="colruyt-vr-total">~€14</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.77rem;color:var(--text-muted);margin-top:10px;">💡 Prijzen zijn indicatief op basis van Colruyt.be (mei 2026). Check de exacte prijs in de winkel. Tip: controleer thuis al wat je al hebt (olijfolie, knoflook, kruiden, kaneel, mosterd) voor je gaat!</p>
+  </div>
+</div>
+
+<!-- ========================= MENU ========================= -->
+<div id="tab-menu" class="section">
+  <div class="section-header"><h2>🍽️ Menu & Recepten</h2><span class="count-badge">24 personen · stap-voor-stap</span></div>
+
+  <div style="background:var(--blue-light);border:1.5px solid var(--blue);border-radius:14px;padding:14px 18px;margin-bottom:22px;font-size:0.87rem;color:var(--blue-dark);">
+    💡 <strong>Tip voor niet-gevorderde koks:</strong> Lees het recept eerst volledig door voor je begint. Gebruik de tijdsindicaties en bereid zoveel mogelijk de dag ervoor voor. Alles is eenvoudiger dan het lijkt!
+  </div>
+
+  <!-- ===== KOUDE SALADES ===== -->
+  <div style="font-weight:800;font-size:1rem;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--border);">🥗 Koude salades & bijgerechten <span style="font-weight:400;font-size:0.82rem;color:var(--text-muted)">(klik om recept te openen)</span></div>
+
+  <!-- 1. Pasta salade -->
+  <div class="r-card">
+    <div class="r-header" onclick="toggleRecipe(this)">
+      <div class="r-emoji">🍝</div>
+      <div class="r-meta">
+        <div class="r-name">Pasta salade</div>
+        <div class="r-tags"><span class="recipe-tag tag-cold">Koud</span><span class="recipe-tag" style="background:var(--green-light);color:var(--green)">✅ Dag voordien</span><span class="recipe-tag" style="background:var(--gray-light);color:var(--gray)">⏱ 25 min</span></div>
+      </div>
+      <div class="r-arrow">▼</div>
+    </div>
+    <div class="r-body">
+      <div class="r-timing">⏱ Bereiding: 25 min &nbsp;|&nbsp; 🗓️ Dag voordien maken &nbsp;|&nbsp; 🧊 Bewaren in koelkast</div>
+      <div class="r-cols">
+        <div class="r-ingr"><h4>Ingrediënten (24p)</h4><ul>
+          <li>Pasta (fusilli/penne) <span>800g (2 pakken)</span></li>
+          <li>Pesto verde <span>2 potjes (~380g)</span></li>
+          <li>Kerstomaten <span>3 bakjes (750g), gehalveerd</span></li>
+          <li>Rucola <span>2 zakjes (200g)</span></li>
+          <li>Olijfolie <span>2 el</span></li>
+          <li>Peper & zout <span>naar smaak</span></li>
+        </ul></div>
+        <div class="r-steps"><h4>Stap-voor-stap</h4><ol>
+          <li>Kook de pasta in ruim gezouten water <strong>al dente</strong> (volg de verpakking, min 1 minuut korter dan aangegeven).</li>
+          <li>Giet af, spoel even met koud water, laat goed uitlekken.</li>
+          <li>Meng de afgekoelde pasta in een grote kom met de pesto + 2 el olijfolie.</li>
+          <li>Halveer de kerstomaten en meng erdoor.</li>
+          <li>Breng op smaak met peper en zout.</li>
+          <li>Dek af en zet in de koelkast.</li>
+        </ol></div>
+      </div>
+      <div class="r-warn">⚠️ Voeg de rucola pas vlak voor serveren toe — anders wordt het slapperig en bruin.</div>
+    </div>
+  </div>
+
+  <!-- 2. Caprese -->
+  <div class="r-card">
+    <div class="r-header" onclick="toggleRecipe(this)">
+      <div class="r-emoji">🍅</div>
+      <div class="r-meta">
+        <div class="r-name">Caprese</div>
+        <div class="r-tags"><span class="recipe-tag tag-cold">Koud</span><span class="recipe-tag" style="background:var(--gray-light);color:var(--gray)">⏱ 10 min</span></div>
+      </div>
+      <div class="r-arrow">▼</div>
+    </div>
+    <div class="r-body">
+      <div class="r-timing">⏱ Bereiding: 10 min &nbsp;|&nbsp; 🗓️ Op de dag zelf, vlak voor serveren</div>
+      <div class="r-cols">
+        <div class="r-ingr"><h4>Ingrediënten (24p)</h4><ul>
+          <li>Kerstomaten <span>3 bakjes (750g)</span></li>
+          <li>Mozzarella mini (bolletjes) <span>2 potten (300g)</span></li>
+          <li>Verse basilicum <span>2 potjes</span></li>
+          <li>Balsamico azijn <span>3–4 el</span></li>
+          <li>Olijfolie <span>3–4 el</span></li>
+          <li>Zeezout & peper <span>naar smaak</span></li>
+        </ul></div>
+        <div class="r-steps"><h4>Stap-voor-stap</h4><ol>
+          <li>Halveer de kerstomaten.</li>
+          <li>Verdeel kerstomaten en mozzarellaballetjes afwisselend op een groot plat bord.</li>
+          <li>Pluk de basilicumblaadjes en leg ze ertussen.</li>
+          <li>Besprenkel rijkelijk met olijfolie en balsamico.</li>
+          <li>Breng op smaak met zeezout en peper.</li>
+        </ol></div>
+      </div>
+      <div class="r-ok">✅ Super simpel en ziet er indrukwekkend uit op tafel!</div>
+    </div>
+  </div>
+
+  <!-- 3. Komkommer-feta -->
+  <div class="r-card">
+    <div class="r-header" onclick="toggleRecipe(this)">
+      <div class="r-emoji">🥒</div>
+      <div class="r-meta">
+        <div class="r-name">Komkommer-feta salade</div>
+        <div class="r-tags"><span class="recipe-tag tag-cold">Koud</span><span class="recipe-tag" style="background:var(--green-light);color:var(--green)">✅ Dag voordien snijden</span><span class="recipe-tag" style="background:var(--gray-light);color:var(--gray)">⏱ 15 min</span></div>
+      </div>
+      <div class="r-arrow">▼</div>
+    </div>
+    <div class="r-body">
+      <div class="r-timing">⏱ Bereiding: 15 min &nbsp;|&nbsp; 🗓️ Dag voordien snijden, dressing de dag zelf</div>
+      <div class="r-cols">
+        <div class="r-ingr"><h4>Ingrediënten (24p)</h4><ul>
+          <li>IJsbergsla of romaine <span>2 kroppen</span></li>
+          <li>Komkommer <span>2 stuks</span></li>
+          <li>Feta (SALAKIS) <span>2 pakken (400g)</span></li>
+          <li>Olijfolie <span>5 el</span></li>
+          <li>Citroensap <span>van 1 citroen</span></li>
+          <li>Peper & zout <span>naar smaak</span></li>
+          <li>Optioneel: witte wijnazijn <span>1 el extra</span></li>
+        </ul></div>
+        <div class="r-steps"><h4>Stap-voor-stap</h4><ol>
+          <li>Snijd de sla in kleine stukjes of reepjes.</li>
+          <li>Snijd de komkommer in halve maantjes (niet te dik, ±0,5 cm).</li>
+          <li>Verkruimel de feta in kleinere stukken.</li>
+          <li>Meng sla, komkommer en feta in een grote kom.</li>
+          <li><strong>Dressing:</strong> klop olijfolie, citroensap, peper en zout samen.</li>
+          <li>Giet de dressing er <strong>vlak voor serveren</strong> pas over!</li>
+        </ol></div>
+      </div>
+      <div class="r-warn">⚠️ NOOIT dressing al de dag voordien erbij — de sla wordt volledig slapperig!</div>
+    </div>
+  </div>
+
+  <!-- 4. Krieltjes -->
+  <div class="r-card">
+    <div class="r-header" onclick="toggleRecipe(this)">
+      <div class="r-emoji">🥔</div>
+      <div class="r-meta">
+        <div class="r-name">Krieltjes met dille & parmezaan</div>
+        <div class="r-tags"><span class="recipe-tag tag-cold">Warm of koud</span><span class="recipe-tag" style="background:var(--green-light);color:var(--green)">✅ Dag voordien</span><span class="recipe-tag" style="background:var(--gray-light);color:var(--gray)">⏱ 30 min</span></div>
+      </div>
+      <div class="r-arrow">▼</div>
+    </div>
+    <div class="r-body">
+      <div class="r-timing">⏱ Bereiding: 30 min &nbsp;|&nbsp; 🗓️ Dag voordien koken, koud serveren of opwarmen</div>
+      <div class="r-cols">
+        <div class="r-ingr"><h4>Ingrediënten (24p)</h4><ul>
+          <li>Krieltjes (BONI) <span>3 kg</span></li>
+          <li>Verse dille <span>1 bakje</span></li>
+          <li>Parmezaan geraspt <span>1 pak (~100g)</span></li>
+          <li>Olijfolie <span>4–5 el</span></li>
+          <li>Zeezout <span>genereus</span></li>
+          <li>Peper <span>naar smaak</span></li>
+        </ul></div>
+        <div class="r-steps"><h4>Stap-voor-stap</h4><ol>
+          <li>Doe de krieltjes in een grote pot met ruim water en een flinke lepel zout.</li>
+          <li>Breng aan de kook, kook ±20 min op middelhoog vuur.</li>
+          <li>Prik met een vork — als die er gemakkelijk door gaat, zijn ze klaar.</li>
+          <li>Giet af en laat even uitdampen (deksel van de pot).</li>
+          <li>Doe in een grote schaal, besprenkel met olijfolie.</li>
+          <li>Strooi verse dille en parmezaan erover.</li>
+          <li>Breng op smaak met zeezout en peper.</li>
+        </ol></div>
+      </div>
+      <div class="r-ok">✅ Lekker warm én koud — echt makkelijk en altijd een succes!</div>
+    </div>
+  </div>
+
+  <!-- 5. Watermeloen -->
+  <div class="r-card">
+    <div class="r-header" onclick="toggleRecipe(this)">
+      <div class="r-emoji">🍉</div>
+      <div class="r-meta">
+        <div class="r-name">Watermeloen in partjes</div>
+        <div class="r-tags"><span class="recipe-tag tag-cold">Koud</span><span class="recipe-tag" style="background:var(--gray-light);color:var(--gray)">⏱ 5 min</span></div>
+      </div>
+      <div class="r-arrow">▼</div>
+    </div>
+    <div class="r-body">
+      <div class="r-cols">
+        <div class="r-ingr"><h4>Ingrediënten</h4><ul>
+          <li>Watermeloen <span>1 grote (heel)</span></li>
+        </ul></div>
+        <div class="r-steps"><h4>Stap-voor-stap</h4><ol>
+          <li>Snijd de watermeloen in de helft, daarna in kwarten.</li>
+          <li>Snijd elke kwart in driehoekige partjes van ±3 cm dik.</li>
+          <li>Leg mooi op een grote schaal of snijplank.</li>
+          <li>Optioneel: strooi wat feta of munt erover voor een twist!</li>
+        </ol></div>
+      </div>
+      <div class="r-ok">✅ Absoluut het makkelijkste gerecht — gewoon snijden en neerleggen!</div>
+    </div>
+  </div>
+
+  <!-- ===== WARME BIJGERECHTEN ===== -->
+  <div style="font-weight:800;font-size:1rem;margin:24px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--border);">🔥 Warme bijgerechten (oven)</div>
+
+  <!-- 6. Gevulde eieren -->
+  <div class="r-card">
+    <div class="r-header" onclick="toggleRecipe(this)">
+      <div class="r-emoji">🥚</div>
+      <div class="r-meta">
+        <div class="r-name">Gevulde eieren</div>
+        <div class="r-tags"><span class="recipe-tag tag-hot">Kook</span><span class="recipe-tag" style="background:var(--green-light);color:var(--green)">✅ Dag voordien</span><span class="recipe-tag" style="background:var(--gray-light);color:var(--gray)">⏱ 30 min</span></div>
+      </div>
+      <div class="r-arrow">▼</div>
+    </div>
+    <div class="r-body">
+      <div class="r-timing">⏱ Bereiding: 30 min &nbsp;|&nbsp; 🗓️ Dag voordien volledig klaarmaken, in koelkast</div>
+      <div class="r-cols">
+        <div class="r-ingr"><h4>Ingrediënten (24p = 48 halve)</h4><ul>
+          <li>Eieren <span>24 stuks (2 dozen)</span></li>
+          <li>Mayonaise <span>8–10 el</span></li>
+          <li>Mosterd <span>2 tl</span></li>
+          <li>Paprikapoeder <span>om te bestrooien</span></li>
+          <li>Peper & zout <span>naar smaak</span></li>
+          <li>Optioneel: bieslook <span>fijngesnipperd</span></li>
+        </ul></div>
+        <div class="r-steps"><h4>Stap-voor-stap</h4><ol>
+          <li>Leg de eieren in een grote pot, dek onder met koud water.</li>
+          <li>Breng aan de kook, kook dan <strong>10 min</strong> op laag vuur.</li>
+          <li>Giet af, laat afkoelen in koud water (minstens 10 min).</li>
+          <li>Pel de eieren en halveer ze in de lengte.</li>
+          <li>Haal de dooiers eruit en doe in een kom.</li>
+          <li>Prak de dooiers fijn met een vork. Voeg mayo en mosterd toe, roer goed door.</li>
+          <li>Breng op smaak met peper en zout.</li>
+          <li>Schep het mengsel terug in de eierwitten (of gebruik een spuitzak voor mooi resultaat).</li>
+          <li>Bestrooi met paprikapoeder. Zet afgedekt in de koelkast.</li>
+        </ol></div>
+      </div>
+      <div class="r-ok">✅ Volledig dag voordien te maken — hoe kouder hoe beter van smaak!</div>
+    </div>
+  </div>
+
+  <!-- 7. Paprika & courgette -->
+  <div class="r-card">
+    <div class="r-header" onclick="toggleRecipe(this)">
+      <div class="r-emoji">🫑</div>
+      <div class="r-meta">
+        <div class="r-name">Paprika & courgette uit de oven</div>
+        <div class="r-tags"><span class="recipe-tag tag-hot">200°C · 25-30 min</span><span class="recipe-tag" style="background:var(--green-light);color:var(--green)">✅ Ochtend feest</span><span class="recipe-tag" style="background:var(--gray-light);color:var(--gray)">⏱ 40 min</span></div>
+      </div>
+      <div class="r-arrow">▼</div>
+    </div>
+    <div class="r-body">
+      <div class="r-timing">⏱ Bereiding: 40 min (incl. oven) &nbsp;|&nbsp; 🗓️ Ochtend van het feest, koud serveren</div>
+      <div class="r-cols">
+        <div class="r-ingr"><h4>Ingrediënten (24p)</h4><ul>
+          <li>Rode paprika's <span>2 stuks</span></li>
+          <li>Gele paprika <span>1 stuk</span></li>
+          <li>Groene paprika <span>1 stuk</span></li>
+          <li>Courgettes <span>3 stuks</span></li>
+          <li>Knoflook <span>3 teentjes, geperst</span></li>
+          <li>Olijfolie <span>4–5 el</span></li>
+          <li>Italiaanse kruiden <span>2 tl (gedroogd)</span></li>
+          <li>Zout & peper <span>naar smaak</span></li>
+        </ul></div>
+        <div class="r-steps"><h4>Stap-voor-stap</h4><ol>
+          <li>Verwarm de oven voor op <strong>200°C</strong>.</li>
+          <li>Snijd paprika's in brede repen (zaadjes eruit).</li>
+          <li>Snijd courgette in schijfjes van ±1 cm.</li>
+          <li>Doe alles in een grote kom. Voeg olijfolie, knoflook, kruiden, zout en peper toe. Meng goed.</li>
+          <li>Verdeel op een of twee bakplaten — <strong>niet te dicht op elkaar</strong> (anders worden ze zacht i.p.v. geroosterd).</li>
+          <li>Zet in de oven, <strong>25–30 min</strong>. Schud halverwege even door.</li>
+          <li>Laat afkoelen. Koud serveren — smaken trekken beter in!</li>
+        </ol></div>
+      </div>
+      <div class="r-ok">✅ Tip: hoe langer ze afkoelen, hoe meer smaak. Ochtend vroeg roosteren = perfecte timing!</div>
+    </div>
+  </div>
+
+  <!-- 8. Aubergine -->
+  <div class="r-card">
+    <div class="r-header" onclick="toggleRecipe(this)">
+      <div class="r-emoji">🍆</div>
+      <div class="r-meta">
+        <div class="r-name">Aubergine uit de oven</div>
+        <div class="r-tags"><span class="recipe-tag tag-hot">200°C · 20-25 min</span><span class="recipe-tag" style="background:#fee2e2;color:#b91c1c">⚠️ 30 min wachten</span><span class="recipe-tag" style="background:var(--gray-light);color:var(--gray)">⏱ 60 min total</span></div>
+      </div>
+      <div class="r-arrow">▼</div>
+    </div>
+    <div class="r-body">
+      <div class="r-timing">⏱ Bereiding: 60 min (incl. 30 min zouten) &nbsp;|&nbsp; 🗓️ Ochtend van het feest</div>
+      <div class="r-cols">
+        <div class="r-ingr"><h4>Ingrediënten (24p)</h4><ul>
+          <li>Aubergines <span>3 stuks</span></li>
+          <li>Grof zout <span>genereus (voor het zouten)</span></li>
+          <li>Olijfolie <span>4 el</span></li>
+          <li>Knoflook <span>2 teentjes, geperst</span></li>
+          <li>Za'atar of oregano <span>2 tl</span></li>
+          <li>Zout & peper <span>na het spoelen</span></li>
+        </ul></div>
+        <div class="r-steps"><h4>Stap-voor-stap</h4><ol>
+          <li>Snijd de aubergine in plakjes van ±1 cm dik.</li>
+          <li>Leg op een theedoek/snijplank. Bestrooi royaal met grof zout aan beide kanten.</li>
+          <li><strong>Laat 30 min staan</strong> — het zout trekt bitterheid en vocht eruit (je ziet druppeltjes).</li>
+          <li>Dep droog met keukenpapier. Spoel niet — gewoon goed deppen!</li>
+          <li>Verwarm oven voor op <strong>200°C</strong>.</li>
+          <li>Meng aubergine met olijfolie, knoflook, za'atar en wat peper.</li>
+          <li>Leg op een bakplaat, niet overlappen.</li>
+          <li>Rooster <strong>20–25 min</strong> tot goudbruin en zacht.</li>
+        </ol></div>
+      </div>
+      <div class="r-warn">⚠️ Stap 2-4 (zouten + deppen) is verplicht — sla je dit over, dan worden ze te waterig en bitter!</div>
+    </div>
+  </div>
+
+  <!-- ===== VLEES BBQ ===== -->
+  <div style="font-weight:800;font-size:1rem;margin:24px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--border);">🥩 Vlees op de BBQ — volgorde & tips</div>
+
+  <div class="card" style="margin-bottom:18px;">
+    <table class="cost-table">
+      <thead><tr><th>Volgorde</th><th>Vleessoort</th><th>Baktijd</th><th>Hoe herken je dat het gaar is?</th><th>Tip</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1e</strong></td><td>🌭 Mergueze</td><td>8–10 min, draaien</td><td>Mooi bruin rondom, sap loopt helder</td><td>Prik niet open — sap blijft erin</td></tr>
+        <tr><td><strong>1e</strong></td><td>🍔 Burger / Kofte</td><td>4–5 min per kant</td><td>Geen roze meer van binnen, stevig aanvoelen</td><td>Eén keer omdraaien, niet indrukken!</td></tr>
+        <tr><td><strong>2e</strong></td><td>🌶️ Adana</td><td>4–5 min per kant</td><td>Bruin en stevig, gaar van binnen</td><td>Zit al gekruid van Yildrim</td></tr>
+        <tr><td><strong>3e</strong></td><td>🐑 Lamskoteletten</td><td>3–4 min per kant</td><td>Mooi geroosterd, beetje roze van binnen = perfect</td><td>Niet te lang — dan worden ze taai</td></tr>
+        <tr><td><strong>Laatste</strong></td><td>🍗 Kipdijen</td><td>12–15 min, draaien</td><td>Sap loopt helder uit, geen roze meer</td><td>Kip moet altijd volledig gaar zijn!</td></tr>
+        <tr><td><strong>Laatste</strong></td><td>🍗 Kippenvleugels</td><td>15–20 min, draaien</td><td>Huid knapperig bruin, sap helder</td><td>Op indirecte hitte starten, dan direct</td></tr>
+      </tbody>
+    </table>
+    <div class="bbq-tip">🔥 <strong>BBQ tip:</strong> Maak twee zones — een hete zone voor aanbraden en een koelere zone om verder te garen zonder verbranden. Als de BBQ rookt zonder vlammen = perfecte temperatuur. Vlammen = te heet, schuif het vlees opzij.</div>
+  </div>
+
+  <!-- ===== VIS ===== -->
+  <div style="font-weight:800;font-size:1rem;margin:24px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--border);">🐟 Vis op de BBQ</div>
+
+  <!-- 9. Scampi -->
+  <div class="r-card">
+    <div class="r-header" onclick="toggleRecipe(this)">
+      <div class="r-emoji">🦐</div>
+      <div class="r-meta">
+        <div class="r-name">Scampi stokjes</div>
+        <div class="r-tags"><span class="recipe-tag tag-fish">BBQ · 2-3 min/kant</span><span class="recipe-tag" style="background:var(--yellow-light);color:var(--yellow-dark)">⚠️ Prikkers weken!</span></div>
+      </div>
+      <div class="r-arrow">▼</div>
+    </div>
+    <div class="r-body">
+      <div class="r-timing">⏱ Voorbereiden: 20 min + 1u weken prikkers &nbsp;|&nbsp; BBQ: 5 min</div>
+      <div class="r-cols">
+        <div class="r-ingr"><h4>Ingrediënten (~18 stokjes)</h4><ul>
+          <li>Scampi (gepeld + ontdarmd) <span>54 stuks</span></li>
+          <li>Knoflook <span>3 teentjes, geperst</span></li>
+          <li>Olijfolie <span>4 el</span></li>
+          <li>Citroensap <span>van 1 citroen</span></li>
+          <li>Verse peterselie <span>handvol, fijngehakt</span></li>
+          <li>Zout & peper <span>naar smaak</span></li>
+          <li>Houten prikkers <span>18 stuks — 1u weken!</span></li>
+        </ul></div>
+        <div class="r-steps"><h4>Stap-voor-stap</h4><ol>
+          <li><strong>1 uur voordien:</strong> leg de houten prikkers in water (anders verbranden ze op de BBQ).</li>
+          <li>Meng scampi met knoflook, olijfolie, citroensap, peterselie, zout en peper.</li>
+          <li>Laat 15–30 min marineren in de koelkast.</li>
+          <li>Steek 3 scampi per prikker.</li>
+          <li>Leg op een hete BBQ: <strong>2–3 min per kant</strong>.</li>
+          <li>Klaar als ze volledig roze/oranje zijn. Direct serveren!</li>
+        </ol></div>
+      </div>
+      <div class="r-warn">⚠️ Scampi zijn razendsnel gaar — 1 min te lang = taai en rubber. Zodra ze roze zijn, eraf!</div>
+    </div>
+  </div>
+
+  <!-- 10. Zalm -->
+  <div class="r-card">
+    <div class="r-header" onclick="toggleRecipe(this)">
+      <div class="r-emoji">🐟</div>
+      <div class="r-meta">
+        <div class="r-name">Zalm in aluminiumfolie</div>
+        <div class="r-tags"><span class="recipe-tag tag-fish">BBQ · 15 min</span><span class="recipe-tag" style="background:var(--green-light);color:var(--green)">✅ Op voorhand klaarmaken</span></div>
+      </div>
+      <div class="r-arrow">▼</div>
+    </div>
+    <div class="r-body">
+      <div class="r-timing">⏱ Voorbereiden: 15 min &nbsp;|&nbsp; BBQ: 15 min (folie dicht)</div>
+      <div class="r-cols">
+        <div class="r-ingr"><h4>Ingrediënten (~12 porties)</h4><ul>
+          <li>Zalmfilets (~150g/stuk) <span>10–12 stuks</span></li>
+          <li>Citroen <span>2 stuks, in schijfjes</span></li>
+          <li>Verse dille <span>klein bosje</span></li>
+          <li>Boter <span>klontje per portie</span></li>
+          <li>Zout & peper <span>naar smaak</span></li>
+          <li>Aluminiumfolie <span>groot genoeg om te vouwen</span></li>
+        </ul></div>
+        <div class="r-steps"><h4>Stap-voor-stap</h4><ol>
+          <li>Scheur een stuk aluminiumfolie per portie (of maak grotere pakketjes voor 2–3 porties).</li>
+          <li>Leg zalmfilet op het folie. Breng op smaak met zout en peper.</li>
+          <li>Leg een klontje boter, een schijfje citroen en wat dille op elke filet.</li>
+          <li>Vouw het folie goed dicht — <strong>goed sluiten</strong> zodat stoom niet ontsnapt.</li>
+          <li>Leg op de BBQ (niet te heet) of in de oven op 200°C.</li>
+          <li><strong>±15 min</strong>, folie gesloten houden.</li>
+          <li>Controleer: zalm is gaar als hij gemakkelijk losbreekt met een vork.</li>
+        </ol></div>
+      </div>
+      <div class="r-ok">✅ Tip: maak de pakketjes al de ochtend klaar in de koelkast — gewoon op de BBQ gooien als het zover is!</div>
+    </div>
+  </div>
+
+  <!-- ===== MOCKTAILS ===== -->
+  <div style="font-weight:800;font-size:1rem;margin:24px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--border);">🍹 Mocktail recepten (Funny flessen)</div>
+  <div class="card" style="margin-bottom:18px;">
+    <div style="background:var(--yellow-light);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:0.85rem;color:var(--yellow-dark);">
+      💡 <strong>Basisregel:</strong> 1/3 glas Funny + 2/3 glas mixer. IJsblokjes erin, garnering erbovenop. Dat is alles!
+    </div>
+    <table class="cost-table">
+      <thead><tr><th>Naam</th><th>Funny smaak</th><th>Mixer</th><th>Garnering</th></tr></thead>
+      <tbody>
+        <tr><td>🍃 Funny Mojito 0.0%</td><td>Mojito Funny</td><td>Bruiswater</td><td>Munt + limoenschijfje</td></tr>
+        <tr><td>🍹 Funny Spritz 0.0%</td><td>Spritz Funny</td><td>Bruiswater</td><td>Sinaasappelschijfje + rozemarijn</td></tr>
+        <tr><td>🍍 Funny Tropical 0.0%</td><td>Tropical Funny</td><td>Sinaasappelsap</td><td>Sinaasappelschijfje + granaatappelpitjes</td></tr>
+        <tr><td>🍏 Funny Pisang 0.0%</td><td>Pisang Funny</td><td>Sinaasappelsap</td><td>Sinaasappelschijfje + kaneelpoeder</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ========================= DAGEN ========================= -->
+<div id="tab-dagen" class="section">
+  <div class="section-header"><h2>📅 Taken per dag</h2></div>
+
+  <div class="day-section">
+    <div class="day-header"><div class="day-bubble">📋 2 weken voor het feest</div><div class="day-line"></div></div>
+    <div class="timeline">
+      <div class="time-slot"><div class="time-label">Dag 1</div><div class="time-task"><strong>🚨 Taarten bestellen bij patisserie</strong><span>4 taarten voor 48 porties — aanlooptijd nodig!</span></div></div>
+      <div class="time-slot"><div class="time-label">Dag 1</div><div class="time-task"><strong>🚨 Prijs mergueze opvragen bij Yildrim</strong><span>Zodat het totaalbudget klopt</span></div></div>
+      <div class="time-slot"><div class="time-label">Dag 1-2</div><div class="time-task"><strong>🚨 Mocktail beslissing nemen</strong><span>Check hoeveel Funny flessen thuis. Mocktail Club online = levertijd!</span></div></div>
+      <div class="time-slot"><div class="time-label">Dag 2</div><div class="time-task"><strong>⚡ Uitnodigingen sturen</strong><span>Datum, uur, adres + parkinginfo</span></div></div>
+      <div class="time-slot"><div class="time-label">Dag 2</div><div class="time-task"><strong>⚡ Buren verwittigen</strong><span>Datum + mogelijke geluidsoverlast</span></div></div>
+      <div class="time-slot"><div class="time-label">Dag 3</div><div class="time-task"><strong>⚡ Vragen aan Mimi: stoelen + frigobox + waaier</strong><span>Duidelijk communiceren wat je nodig hebt en wanneer</span></div></div>
+      <div class="time-slot"><div class="time-label">Dag 3</div><div class="time-task"><strong>⚡ Vragen aan Mama: stoelen lenen</strong><span>Hoeveel heeft ze beschikbaar?</span></div></div>
+      <div class="time-slot"><div class="time-label">Dag 4</div><div class="time-task"><strong>⚡ Speaker ophalen bij Ahmed</strong><span>2 Sony speakers testen in party mode</span></div></div>
+    </div>
+  </div>
+
+  <div class="day-section">
+    <div class="day-header"><div class="day-bubble">📦 1 week voor het feest</div><div class="day-line"></div></div>
+    <div class="timeline">
+      <div class="time-slot"><div class="time-label">Ma–di</div><div class="time-task"><strong>⚡ Slinger bestellen — Alessio</strong><span>Grote "Happy Birthday" variant voor over het terras</span></div></div>
+      <div class="time-slot"><div class="time-label">Ma–di</div><div class="time-task"><strong>⚡ Buitenlampjes kopen — Alessio</strong><span>Fairy lights of koppelbare lampen voor sfeer</span></div></div>
+      <div class="time-slot"><div class="time-label">Wo–do</div><div class="time-task"><strong>📌 Afspeellijst maken</strong><span>BBQ playlist voor middag/avond</span></div></div>
+      <div class="time-slot"><div class="time-label">Do–vr</div><div class="time-task"><strong>📌 Bestek, borden & glazen kopen bij Action</strong><span>40 stuks per categorie — beslissing genomen: kopen!</span></div></div>
+      <div class="time-slot"><div class="time-label">Vr–za</div><div class="time-task"><strong>📌 Tent oefenen + opstelling plannen</strong><span>Loungezone + eetzone + staanzone</span></div></div>
+      <div class="time-slot"><div class="time-label">Vr–za</div><div class="time-task"><strong>📌 2 hoge cocktailtafels kopen — Alessio</strong><span>IKEA, Action of Brico</span></div></div>
+      <div class="time-slot"><div class="time-label">Za</div><div class="time-task"><strong>📌 Dieetwensen uitvragen</strong><span>Vegetariërs? Allergieën?</span></div></div>
+    </div>
+  </div>
+
+  <div class="day-section">
+    <div class="day-header"><div class="day-bubble">🛒 2 dagen voor het feest</div><div class="day-line"></div></div>
+    <div class="timeline">
+      <div class="time-slot"><div class="time-label">Ochtend</div><div class="time-task"><strong>🥩 Vlees ophalen Yildrim</strong><span>~8,6 kg totaal</span></div></div>
+      <div class="time-slot"><div class="time-label">Middag</div><div class="time-task"><strong>🥤 Inkoop Prik & Tik</strong><span>Water, Cola, Fanta, Sprite, IJsthee, Sinaasappelsap, Bruiswater + Funny</span></div></div>
+      <div class="time-slot"><div class="time-label">Middag</div><div class="time-task"><strong>🐟 Vis kopen</strong><span>Scampi (54 stuks) + zalmfilets (12 porties)</span></div></div>
+      <div class="time-slot"><div class="time-label">Middag</div><div class="time-task"><strong>🥗 Groenten + kruiden + salade</strong><span>Krieltjes 3 kg, paprika's 4, courgettes 3, aubergines 3, sla, feta, mozzarella…</span></div></div>
+      <div class="time-slot"><div class="time-label">Middag</div><div class="time-task"><strong>🍞 Broodjes kopen</strong><span>±36–48 stuks</span></div></div>
+    </div>
+  </div>
+
+  <div class="day-section">
+    <div class="day-header"><div class="day-bubble">🌙 Dag voor het feest</div><div class="day-line"></div></div>
+    <div class="timeline">
+      <div class="time-slot"><div class="time-label">Ochtend</div><div class="time-task"><strong>🏠 Huis opruimen</strong><span>Toegang, toilet, gang klaarmaken voor gasten</span></div></div>
+      <div class="time-slot"><div class="time-label">Ochtend</div><div class="time-task"><strong>🌿 Tuin klaarmaken</strong><span>Gras maaien, opruimen, BBQ proper maken</span></div></div>
+      <div class="time-slot"><div class="time-label">Namiddag</div><div class="time-task"><strong>🎨 Versiering hangen (Alessio + Maryam)</strong><span>Slinger, "30" ballonnen (kopen bij Action!), lampjes buiten</span></div></div>
+      <div class="time-slot"><div class="time-label">Namiddag</div><div class="time-task"><strong>🪑 Tent + stoelen + tafels plaatsen</strong><span>Loungezone · eetzone · staanzone. Frigobox van Mimi klaarzetten.</span></div></div>
+      <div class="time-slot"><div class="time-label">Avond</div><div class="time-task"><strong>🍝 Pasta salade + gevulde eieren</strong><span>In koelkast bewaren tot morgen</span></div></div>
+      <div class="time-slot"><div class="time-label">Avond</div><div class="time-task"><strong>🧊 IJsblokjes halen</strong><span>Veel nodig — voor dranken én frigobox</span></div></div>
+      <div class="time-slot"><div class="time-label">Avond</div><div class="time-task"><strong>🔊 Speakers testen + playlist klaar</strong><span>Party mode 2× Sony testen</span></div></div>
+    </div>
+  </div>
+
+  <div class="day-section">
+    <div class="day-header"><div class="day-bubble">🎉 Dag van het feest!</div><div class="day-line"></div></div>
+    <div class="timeline">
+      <div class="time-slot"><div class="time-label">-4u</div><div class="time-task"><strong>🫑 Paprika & courgette + aubergine in de oven</strong><span>200°C. Koud serveren — smaken trekken beter in!</span></div></div>
+      <div class="time-slot"><div class="time-label">-3u</div><div class="time-task"><strong>🥗 Salades afwerken + op tafel</strong><span>Dressing komkommersalade pas nu. Caprese opmaken. Krieltjes klaarzetten.</span></div></div>
+      <div class="time-slot"><div class="time-label">-2u</div><div class="time-task"><strong>🔥 BBQ aansteken (Alessio)</strong><span>Op temperatuur laten komen</span></div></div>
+      <div class="time-slot"><div class="time-label">-1u</div><div class="time-task"><strong>🍹 Mocktail garnering klaarzetten + vlees op schalen</strong><span>Volgorde BBQ: burgers/mergueze → spiesjes → lam → kip</span></div></div>
+      <div class="time-slot"><div class="time-label">Start</div><div class="time-task"><strong>🎂 Taarten ophalen bij patisserie</strong><span>4 taarten gekoeld vervoeren en in koelkast</span></div></div>
+      <div class="time-slot"><div class="time-label">BBQ</div><div class="time-task"><strong>🦐 Scampi (2-3 min/kant) + Zalm in folie (15 min)</strong><span>Niet te vroeg op de BBQ!</span></div></div>
+      <div class="time-slot"><div class="time-label">🎉</div><div class="time-task"><strong>Genieten! 🥂</strong><span>Alles is voorbereid — jij bent 30 en dit ga je geweldig zijn!</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================= GASTEN ========================= -->
+<div id="tab-gasten" class="section">
+  <div class="section-header"><h2>👥 Gastenlijst</h2><span class="count-badge">24 bevestigd</span></div>
+  <div class="stats-row" style="margin-bottom:18px">
+    <div class="stat-card"><div class="stat-icon">👑</div><div class="stat-value">2</div><div class="stat-label">Gastgezin</div></div>
+    <div class="stat-card"><div class="stat-icon">👨‍👩‍👧‍👦</div><div class="stat-value">11</div><div class="stat-label">Familie</div></div>
+    <div class="stat-card"><div class="stat-icon">👫</div><div class="stat-value">11</div><div class="stat-label">Vrienden</div></div>
+    <div class="stat-card"><div class="stat-icon">👶</div><div class="stat-value">2</div><div class="stat-label">Kleine kinderen</div></div>
+    <div class="stat-card"><div class="stat-icon">🧑</div><div class="stat-value">22</div><div class="stat-label">Volwassenen</div></div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">👨‍👩‍👧‍👦 Familie (11)</div>
+      <div class="guest-grid">
+        <div class="guest-chip"><div class="avatar avatar-host">M</div>Maryam<div class="guest-type">🎂 Jarige!</div></div>
+        <div class="guest-chip"><div class="avatar avatar-host">A</div>Alessio<div class="guest-type">Gastgezin</div></div>
+        <div class="guest-chip"><div class="avatar avatar-family">N</div>Nida<div class="guest-type">Familie</div></div>
+        <div class="guest-chip"><div class="avatar avatar-family">T</div>Tabish<div class="guest-type">Familie</div></div>
+        <div class="guest-chip"><div class="avatar avatar-family">Z</div>Zayden<div class="guest-type">👶 3 jaar</div></div>
+        <div class="guest-chip"><div class="avatar avatar-family">K</div>Kausar<div class="guest-type">Familie</div></div>
+        <div class="guest-chip"><div class="avatar avatar-family">I</div>Ilya<div class="guest-type">Familie</div></div>
+        <div class="guest-chip"><div class="avatar avatar-family">L</div>Lillo<div class="guest-type">Familie</div></div>
+        <div class="guest-chip"><div class="avatar avatar-family">M</div>Mimi<div class="guest-type">Schoonmoeder</div></div>
+        <div class="guest-chip"><div class="avatar avatar-family">A</div>Ahmed<div class="guest-type">🔊 Speaker!</div></div>
+        <div class="guest-chip"><div class="avatar avatar-family">F</div>Farah<div class="guest-type">Familie</div></div>
+        <div class="guest-chip"><div class="avatar avatar-family">S</div>Sana<div class="guest-type">Familie</div></div>
+        <div class="guest-chip"><div class="avatar avatar-family">S</div>Sajjad<div class="guest-type">Familie</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">👫 Vrienden (11)</div>
+      <div class="guest-grid">
+        <div class="guest-chip"><div class="avatar avatar-friend">A</div>Aicha<div class="guest-type">Vriend</div></div>
+        <div class="guest-chip"><div class="avatar avatar-friend">B</div>Bennet<div class="guest-type">Vriend</div></div>
+        <div class="guest-chip"><div class="avatar avatar-friend">Z</div>Zoë<div class="guest-type">Vriend</div></div>
+        <div class="guest-chip"><div class="avatar avatar-friend">H</div>Högne<div class="guest-type">Vriend</div></div>
+        <div class="guest-chip"><div class="avatar avatar-friend">S</div>Silke<div class="guest-type">Vriend</div></div>
+        <div class="guest-chip"><div class="avatar avatar-friend">T</div>Tibo<div class="guest-type">Vriend</div></div>
+        <div class="guest-chip"><div class="avatar avatar-friend">N</div>Nadia<div class="guest-type">Vriend</div></div>
+        <div class="guest-chip"><div class="avatar avatar-friend">T</div>Thibaut<div class="guest-type">Vriend</div></div>
+        <div class="guest-chip"><div class="avatar avatar-friend">E</div>Ezra<div class="guest-type">👶 2 jaar</div></div>
+        <div class="guest-chip"><div class="avatar avatar-friend">I</div>Ilse<div class="guest-type">Geen kinderen</div></div>
+        <div class="guest-chip"><div class="avatar avatar-friend">M</div>Michiel<div class="guest-type">Vriend</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px; background:var(--yellow-light); border-color:var(--yellow-mid)">
+    <div class="card-title">👶 Kinderhoekje — speciale aandacht!</div>
+    <p style="font-size:0.88rem; color:var(--text-muted)">
+      🧸 <strong>Zayden</strong> (3j, kind van Nida & Tabish) &nbsp;·&nbsp; 🧸 <strong>Ezra</strong> (2j, kind van Nadia & Thibaut)<br>
+      ⚠️ Kinderhoekje voorzien · veiligheid rondom BBQ · geen losse kleine voorwerpen
+    </p>
+  </div>
+  <div class="card" style="margin-top:16px; background:var(--blue-light); border-color:var(--blue)">
+    <div class="card-title">🚗 Parkinginfo — tekst voor uitnodiging</div>
+    <p style="font-size:0.88rem; color:var(--blue-dark); font-style:italic;">
+      "Bij ons thuis passen max 5 auto's. Extra parking beschikbaar op de parking in de buurt — we sturen de locatie door."
+    </p>
+    <p style="font-size:0.78rem;color:var(--text-muted);margin-top:8px;">⚠️ Parkinglocatie nog te bepalen!</p>
+  </div>
+</div>
+
+<div class="footer-note">🎂 Maryam 30 jaar BBQ · Pastel Yellow × Polar Wind · mei 2026</div>
+
+<script>
+// ===== TABS =====
+function showTab(name, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ===== TODOS =====
+const todos = [
+  { id:1,  title:'🎂 Taarten bestellen bij patisserie', urgency:'urgent', person:'maryam', personLabel:'Maryam', note:'4 taarten = 48 porties. Aanlooptijd nodig!', done:false },
+  { id:2,  title:'🌭 Prijs mergueze opvragen bij Yildrim', urgency:'urgent', person:'maryam', personLabel:'Maryam', note:'Zodat totaalbudget klopt', done:false },
+  { id:3,  title:'🍹 Mocktail beslissing nemen (Optie 1, 2 of 3)', urgency:'urgent', person:'maryam', personLabel:'Maryam', note:'Check eerst hoeveel Funny thuis. Mocktail Club = levertijd!', done:false },
+  { id:4,  title:'📨 Uitnodigingen sturen naar gasten', urgency:'soon', person:'both', personLabel:'Maryam + Alessio', note:'Datum, uur, adres + parkinginfo meesturen', done:false },
+  { id:5,  title:'🏘️ Buren verwittigen', urgency:'soon', person:'maryam', personLabel:'Maryam', note:'Datum + mogelijke geluidsoverlast', done:false },
+  { id:6,  title:'🪑 Stoelen lenen bij Mimi (schoonmoeder)', urgency:'soon', person:'mimi', personLabel:'Mimi', note:'Vroeg vragen zodat ze weet wat nodig is', done:false },
+  { id:7,  title:'🧊 Frigobox vragen aan Mimi', urgency:'soon', person:'mimi', personLabel:'Mimi', note:'Voor koeling van drankjes tijdens het feest', done:false },
+  { id:8,  title:'🌬️ Waaier/ventilator vragen aan Mimi', urgency:'soon', person:'mimi', personLabel:'Mimi', note:'Om vliegen weg te houden — handig buiten!', done:false },
+  { id:9,  title:'🪑 Stoelen lenen bij Mama', urgency:'soon', person:'mama', personLabel:'Mama', note:'Hoeveel heeft ze beschikbaar?', done:false },
+  { id:10, title:'🔊 Speaker ophalen bij Ahmed', urgency:'soon', person:'ahmed', personLabel:'Ahmed', note:'2 Sony speakers koppelen (party mode)', done:false },
+  { id:11, title:'🎀 Slinger "Happy Birthday" bestellen', urgency:'soon', person:'alessio', personLabel:'Alessio', note:'Grote variant voor over het terras', done:false },
+  { id:12, title:'💡 Buitenlampjes kopen', urgency:'soon', person:'alessio', personLabel:'Alessio', note:'Fairy lights / koppelbare buitenlampen', done:false },
+  { id:13, title:'🥩 Vlees bestellen bij Yildrim', urgency:'normal', person:'maryam', personLabel:'Maryam', note:'~8,6 kg totaal', done:false },
+  { id:14, title:'🏕️ Tent opzetten + opstelling plannen', urgency:'normal', person:'both', personLabel:'Maryam + Alessio', note:'Loungezone + eetzone + staanzone', done:false },
+  { id:15, title:'🍽️ Bestek, borden & glazen kopen bij Action', urgency:'normal', person:'maryam', personLabel:'Maryam', note:'40 stuks per categorie — wegwerpbestek, borden én glazen', done:false },
+  { id:16, title:'🎵 Afspeellijst maken', urgency:'normal', person:'maryam', personLabel:'Maryam', note:'BBQ playlist voor de hele dag', done:false },
+  { id:17, title:'🛒 2 hoge cocktailtafels kopen', urgency:'normal', person:'alessio', personLabel:'Alessio', note:'IKEA, Action of Brico', done:false },
+  { id:18, title:'🩺 Dieetwensen uitvragen bij gasten', urgency:'normal', person:'maryam', personLabel:'Maryam', note:'Vegetariërs, allergieën?', done:false },
+  { id:19, title:'🛒 Colruyt — salades & bijgerechten inkopen', urgency:'normal', person:'maryam', personLabel:'Maryam', note:'🗓️ Donderdag alleen — zie Colruyt-lijstje in kostentab (~€83)', done:false },
+  { id:26, title:'🧊 Colruyt — CASTLE ICE ijsblokjes ophalen', urgency:'later', person:'maryam', personLabel:'Maryam', note:'🗓️ Vrijdag! 8 zakken × 2kg = 16 kg | €1,72/zak → ~€14 | Diepvries-afdeling', done:false },
+  { id:27, title:'🛒 Grote inkoop drank + vis + brood (Prik&Tik + vis)', urgency:'normal', person:'both', personLabel:'Maryam + Alessio', note:'2 dagen voor feest — apart van Colruyt', done:false },
+  { id:34, title:'🎈 "30" ballonnen kopen bij Action', urgency:'normal', person:'maryam', personLabel:'Maryam', note:'Ballonnen met "30" erop — voor de versiering', done:false },
+  { id:20, title:'🎈 Ballonnen opblazen', urgency:'later', person:'both', personLabel:'Maryam + Alessio', note:'Dag voor het feest — nadat ballonnen gekocht zijn bij Action', done:false },
+  { id:21, title:'🥗 Pasta salade + gevulde eieren maken', urgency:'later', person:'maryam', personLabel:'Maryam', note:'Dag ervoor, in koelkast bewaren', done:false },
+  { id:22, title:'🌿 Tuin klaarmaken + gras maaien', urgency:'later', person:'both', personLabel:'Maryam + Alessio', note:'Dag ervoor', done:false },
+  { id:23, title:'🧊 IJsblokjes halen', urgency:'later', person:'maryam', personLabel:'Maryam', note:'Dag ervoor — veel nodig voor dranken + frigobox', done:false },
+  { id:24, title:'🔥 BBQ aansteken (-2u voor aanvang)', urgency:'later', person:'alessio', personLabel:'Alessio', note:'Op temperatuur laten komen', done:false },
+  { id:25, title:'✅ Gastenlijst bevestigd — 24 personen', urgency:'done', person:'maryam', personLabel:'Maryam', note:'22 volwassenen + 2 kinderen, definitief', done:true },
+  { id:28, title:'🥩 Vlees halen bij Yildrim', urgency:'later', person:'alessio', personLabel:'Alessio', note:'Dag voor het feest — ~8,6 kg totaal', done:false },
+  { id:29, title:'🛒 Colruyt + ijsblokjes (CASTLE ICE)', urgency:'later', person:'alessio', personLabel:'Alessio', note:'Dag voor het feest — 8 zakken × 2kg ijsblokjes', done:false },
+  { id:30, title:'🏕️ Tent opzetten (Alessio + Papa)', urgency:'later', person:'alessio', personLabel:'Alessio + Papa', note:'Dag voor het feest — samen opstellen', done:false },
+  { id:31, title:'🍞 Broodjes halen bij Erpa', urgency:'later', person:'alessio', personLabel:'Alessio', note:'Dag voor het feest — ±36–48 stuks', done:false },
+  { id:32, title:'🥗 Groentjes snijden (namiddag)', urgency:'later', person:'mama', personLabel:'Mama + Mimi', note:'Dag voor het feest — samen in de namiddag', done:false },
+  { id:33, title:'🥩 Vlees voorbereiden (eventueel)', urgency:'later', person:'mama', personLabel:'Mama + Mimi', note:'Dag voor het feest — marinade / klaarzetten indien nodig', done:false },
+  { id:35, title:'🥦 Vegetarische opties kopen bij AH', urgency:'normal', person:'maryam', personLabel:'Maryam', note:'Albert Heijn — veggie burgers, halloumi of andere alternatieven voor BBQ', done:false },
+  { id:36, title:'🪨 Houtskool + briketten kopen', urgency:'normal', person:'alessio', personLabel:'Alessio', note:'Voldoende voor ±4u BBQ voor 24 personen', done:false },
+  { id:37, title:'🔥 Aansteken zaken kopen', urgency:'normal', person:'alessio', personLabel:'Alessio', note:'Aansteker(s) + aanmaakblokjes voor de BBQ', done:false },
+  { id:38, title:'🍽️ Schalen voor BBQ warm te houden kopen (Action)', urgency:'normal', person:'maryam', personLabel:'Maryam', note:'Action — warmhoudschalen voor vlees/bijgerechten op tafel', done:false },
+  { id:39, title:'🍲 Schalen met warmhouders vragen aan Mama (2 stuks)', urgency:'soon', person:'mama', personLabel:'Mama', note:'Mama heeft 2 schalen met warmhouders — vragen om mee te brengen', done:false },
+  { id:40, title:'🕯️ Citronella kaarsjes kopen', urgency:'normal', person:'maryam', personLabel:'Maryam', note:'Tegen muggen/insecten buiten tijdens de BBQ', done:false },
+];
+
+// Per-person tasks
+const personTasks = {
+  maryam: [
+    { id:'p1', title:'🎂 Taarten bestellen bij patisserie', urgency:'urgent', note:'4 taarten = 48 porties. Aanlooptijd!', done:false },
+    { id:'p2', title:'🌭 Prijs mergueze opvragen bij Yildrim', urgency:'urgent', note:'', done:false },
+    { id:'p3', title:'🍹 Mocktail beslissing nemen', urgency:'urgent', note:'Check Funny voorraad thuis', done:false },
+    { id:'p4', title:'📨 Uitnodigingen sturen naar gasten', urgency:'soon', note:'Datum, uur, adres + parking', done:false },
+    { id:'p5', title:'🏘️ Buren verwittigen', urgency:'soon', note:'', done:false },
+    { id:'p6', title:'🥩 Vlees bestellen bij Yildrim', urgency:'normal', note:'~8,6 kg totaal', done:false },
+    { id:'p7', title:'🎵 Afspeellijst maken', urgency:'normal', note:'', done:false },
+    { id:'p8', title:'🩺 Dieetwensen uitvragen bij gasten', urgency:'normal', note:'Vegetariërs, allergieën?', done:false },
+    { id:'p9', title:'🛒 Colruyt donderdag — salades & bijgerechten', urgency:'normal', note:'Zie volledige lijst in Kostentab → Colruyt boodschappen (~€92)', done:false },
+    { id:'p11', title:'🧊 Colruyt vrijdag — CASTLE ICE ijsblokjes', urgency:'later', note:'8× 2kg zakken = 16 kg | ~€14 | Diepvries-afdeling', done:false },
+    { id:'p10', title:'🥗 Pasta salade + gevulde eieren (dag ervoor)', urgency:'later', note:'', done:false },
+    { id:'p12', title:'🎈 "30" ballonnen kopen bij Action', urgency:'normal', note:'Ballonnen met "30" erop — voor de versiering', done:false },
+    { id:'p13', title:'🍽️ Bestek, borden & glazen kopen bij Action', urgency:'normal', note:'40 stuks per categorie — wegwerpbestek, borden én glazen', done:false },
+    { id:'p14', title:'🥦 Vegetarische opties kopen bij AH', urgency:'normal', note:'Albert Heijn — veggie burgers, halloumi of andere alternatieven voor BBQ', done:false },
+    { id:'p15', title:'🍽️ Warmhoudschalen kopen (Action)', urgency:'normal', note:'Voor vlees en bijgerechten warm te houden op tafel', done:false },
+    { id:'p16', title:'🕯️ Citronella kaarsjes kopen', urgency:'normal', note:'Tegen muggen/insecten buiten tijdens de BBQ', done:false },
+  ],
+  alessio: [
+    { id:'a1', title:'🎀 Slinger "Happy Birthday" bestellen', urgency:'soon', note:'Grote variant voor over het terras', done:false },
+    { id:'a2', title:'💡 Buitenlampjes kopen', urgency:'soon', note:'Fairy lights / koppelbare lampen', done:false },
+    { id:'a3', title:'🛒 2 hoge cocktailtafels kopen', urgency:'normal', note:'IKEA, Action of Brico', done:false },
+    { id:'a4', title:'🏕️ Tent opzetten + opstelling plannen', urgency:'normal', note:'Loungezone + eet + staanzone', done:false },
+    { id:'a5', title:'🔥 BBQ aansteken (-2u voor aanvang)', urgency:'later', note:'Op temperatuur laten komen', done:false },
+    { id:'a6', title:'🥩 Vlees halen bij Yildrim', urgency:'later', note:'Dag voor het feest — ~8,6 kg totaal', done:false },
+    { id:'a7', title:'🛒 Colruyt — inkoop + ijsblokjes (CASTLE ICE)', urgency:'later', note:'Dag voor het feest — 8 zakken × 2kg ijsblokjes + eventuele boodschappen', done:false },
+    { id:'a8', title:'🏕️ Tent helpen opzetten met Papa', urgency:'later', note:'Dag voor het feest — samen met papa opstellen', done:false },
+    { id:'a9', title:'🍞 Broodjes halen bij Erpa', urgency:'later', note:'Dag voor het feest — ±36–48 stuks', done:false },
+    { id:'a10', title:'🪨 Houtskool + briketten kopen', urgency:'normal', note:'Voldoende voor ±4u BBQ voor 24 personen', done:false },
+    { id:'a11', title:'🔥 Aansteken zaken kopen', urgency:'normal', note:'Aansteker(s) + aanmaakblokjes', done:false },
+  ],
+  mama: [
+    { id:'m1', title:'🪑 Stoelen uitlenen aan Maryam', urgency:'soon', note:'Checken hoeveel beschikbaar. Nodig: max ~15 stoelen totaal (ook Mimi vraagt)', done:false },
+    { id:'m2', title:'🍽️ Borden/bestek uitlenen — niet meer nodig', urgency:'done', note:'Beslissing genomen: kopen bij Action (40 stuks per categorie)', done:true },
+    { id:'m3', title:'🥗 Groentjes helpen snijden (namiddag)', urgency:'later', note:'Dag voor het feest — samen met Mimi in de namiddag', done:false },
+    { id:'m4', title:'🥩 Vlees voorbereiden (eventueel)', urgency:'later', note:'Dag voor het feest — indien nodig helpen met marinade / klaarzetten', done:false },
+    { id:'m5', title:'🍲 Schalen met warmhouders meebrengen (2 stuks)', urgency:'soon', note:'Mama heeft 2 schalen met warmhouders — meebrengen naar het feest', done:false },
+  ],
+  mimi: [
+    { id:'mi1', title:'🪑 Stoelen uitlenen aan Maryam', urgency:'soon', note:'Zoveel mogelijk — samen met mama aanvullen tot ~15 stoelen', done:false },
+    { id:'mi2', title:'🧊 Frigobox meebrengen', urgency:'soon', note:'Voor koeling van drankjes tijdens het feest. Maryam voorziet ijsblokjes.', done:false },
+    { id:'mi3', title:'🌬️ Waaier/ventilator meebrengen', urgency:'soon', note:'Tegen de vliegen buiten — héél handig bij een BBQ!', done:false },
+    { id:'mi4', title:'🥗 Groentjes helpen snijden (namiddag)', urgency:'later', note:'Dag voor het feest — samen met Mama in de namiddag', done:false },
+    { id:'mi5', title:'🥩 Vlees voorbereiden (eventueel)', urgency:'later', note:'Dag voor het feest — indien nodig helpen met marinade / klaarzetten', done:false },
+    { id:'mi6', title:'🫙 Tzatziki & tarama zelfgemaakt', urgency:'later', note:'Dag voor het feest — ingrediënten staan op de Colruyt-lijst (yoghurt, tarama-kuit, ui, dille...)', done:false },
+  ],
+  ahmed: [
+    { id:'ah1', title:'🔊 Speaker(s) meebrengen', urgency:'soon', note:'Sony speaker(s) — koppelen in party mode met Maryam\'s speaker testen', done:false },
+  ],
+  papa: [
+    { id:'pa1', title:'🏕️ Tent opzetten samen met Alessio', urgency:'later', note:'Dag voor het feest', done:false },
+  ],
+};
+
+let _syncTimer = null;
+
+function applyCalcState(data) {
+  if (data.meatKg) data.meatKg.forEach((kg, i) => { if (meats[i]) meats[i].kg = kg; });
+  if (data.guests) {
+    const slider = document.getElementById('guestSlider');
+    if (slider) slider.value = data.guests;
+  }
+}
+
+async function loadState() {
+  try {
+    const res = await fetch('/api/state');
+    if (res.ok) {
+      const data = await res.json();
+      const stored = data.todos || {};
+      const storedP = data.ptodos || {};
+      todos.forEach(t => { if (stored[t.id] !== undefined) t.done = stored[t.id]; });
+      Object.values(personTasks).flat().forEach(t => { if (storedP[t.id] !== undefined) t.done = storedP[t.id]; });
+      applyCalcState(data);
+      return;
+    }
+  } catch (e) {}
+  // Fallback: localStorage
+  const stored = JSON.parse(localStorage.getItem('bbq-todos') || '{}');
+  const storedP = JSON.parse(localStorage.getItem('bbq-ptodos') || '{}');
+  todos.forEach(t => { if (stored[t.id] !== undefined) t.done = stored[t.id]; });
+  Object.values(personTasks).flat().forEach(t => { if (storedP[t.id] !== undefined) t.done = storedP[t.id]; });
+  const calcStored = JSON.parse(localStorage.getItem('bbq-calc') || '{}');
+  applyCalcState(calcStored);
+}
+
+function saveState() {
+  const todos_s = {}, ptodos_s = {};
+  todos.forEach(t => todos_s[t.id] = t.done);
+  Object.values(personTasks).flat().forEach(t => ptodos_s[t.id] = t.done);
+  const guests = parseInt(document.getElementById('guestSlider')?.value || 24);
+  const meatKg = meats.map(m => m.kg);
+  const payload = { todos: todos_s, ptodos: ptodos_s, meatKg, guests };
+  localStorage.setItem('bbq-todos', JSON.stringify(todos_s));
+  localStorage.setItem('bbq-ptodos', JSON.stringify(ptodos_s));
+  localStorage.setItem('bbq-calc', JSON.stringify({ meatKg, guests }));
+  clearTimeout(_syncTimer);
+  _syncTimer = setTimeout(() => {
+    fetch('/api/state', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).catch(() => {});
+  }, 500);
+}
+
+function urgencyBadge(u) {
+  const map = {
+    urgent: '<span class="badge badge-urgent">🚨 Dringend</span>',
+    soon: '<span class="badge badge-soon">⚡ Snel doen</span>',
+    normal: '<span class="badge badge-normal">📌 Normaal</span>',
+    later: '<span class="badge badge-later">🕐 Dag zelf</span>',
+    done: '<span class="badge badge-done">✅ Afgerond</span>'
+  };
+  return map[u] || '';
+}
+
+function personChip(p, label) {
+  return `<span class="person person-${p}">👤 ${label}</span>`;
+}
+
+function renderTodos() {
+  const groups = { urgent:[], soon:[], normal:[], later:[], done:[] };
+  todos.forEach(t => {
+    const g = (t.done && t.urgency !== 'done') ? 'done' : t.urgency;
+    groups[g].push(t);
+  });
+  Object.entries(groups).forEach(([key, items]) => {
+    const el = document.getElementById('list-' + key);
+    if (!el) return;
+    el.innerHTML = items.length === 0
+      ? '<p style="color:var(--text-muted);font-size:0.85rem;padding:8px 0">Geen taken hier 🎉</p>'
+      : items.map(t => `
+        <div class="todo-item ${t.done?'completed':''}" id="todo-${t.id}">
+          <div class="todo-check ${t.done?'checked':''}" onclick="toggleTodo(${t.id})"></div>
+          <div class="todo-content">
+            <div class="todo-title" style="${t.done?'text-decoration:line-through':''}">${t.title}</div>
+            <div class="todo-meta">${urgencyBadge(t.urgency)} ${personChip(t.person, t.personLabel)}</div>
+            ${t.note ? `<div class="todo-note">💬 ${t.note}</div>` : ''}
+          </div>
+        </div>`).join('');
+  });
+  const doneCount = todos.filter(t => t.done || t.urgency === 'done').length;
+  document.getElementById('todo-count').textContent = `${doneCount}/${todos.length} klaar`;
+  document.getElementById('cnt-urgent').textContent = groups.urgent.filter(t=>!t.done).length;
+  document.getElementById('cnt-soon').textContent = groups.soon.filter(t=>!t.done).length;
+  document.getElementById('cnt-normal').textContent = groups.normal.filter(t=>!t.done).length;
+  document.getElementById('cnt-later').textContent = groups.later.filter(t=>!t.done).length;
+  document.getElementById('cnt-done').textContent = doneCount;
+}
+
+function toggleTodo(id) {
+  const t = todos.find(x => x.id === id);
+  if (t && t.urgency !== 'done') { t.done = !t.done; saveState(); renderTodos(); }
+}
+
+function renderPersonTasks() {
+  Object.entries(personTasks).forEach(([person, tasks]) => {
+    const el = document.getElementById('ptasks-' + person);
+    if (!el) return;
+    el.innerHTML = tasks.map(t => `
+      <div class="ptask ${t.done?'completed':''}">
+        <div class="ptask-check ${t.done?'checked':''}" onclick="togglePtask('${t.id}', '${person}')"></div>
+        <div class="ptask-body">
+          <div class="ptask-title" style="${t.done?'text-decoration:line-through':''}">${t.title}</div>
+          ${t.note ? `<div class="ptask-note">💬 ${t.note}</div>` : ''}
+          <div class="ptask-urgency">${urgencyBadge(t.urgency)}</div>
+        </div>
+      </div>`).join('');
+  });
+}
+
+function togglePtask(id, person) {
+  const t = personTasks[person].find(x => x.id === id);
+  if (t) { t.done = !t.done; saveState(); renderPersonTasks(); }
+}
+
+// ===== COLRUYT ICE CALCULATOR =====
+let iceQty = 8;
+function changeIce(delta) {
+  iceQty = Math.max(1, iceQty + delta);
+  document.getElementById('ice-qty').textContent = iceQty;
+  document.getElementById('ice-kg').textContent = iceQty * 2;
+  const cost = (iceQty * 1.72).toFixed(2);
+  document.getElementById('ice-cost').textContent = '~€' + cost;
+  document.getElementById('colruyt-vr-total').textContent = '~€' + cost;
+}
+function updateColruytTotal() { /* checkboxes for visual feedback only */ }
+
+// ===== VLEES CALCULATOR (kg-gebaseerd) =====
+const meats = [
+  { emoji:'🐑', name:'Lamskoteletten gemarineerd', kg:3,   grPerStuk:100, pricePerKg:23.99 },
+  { emoji:'🍔', name:'Burger / Kofte',             kg:3,   grPerStuk:120, pricePerKg:14.99 },
+  { emoji:'🌶️', name:'Adana',                      kg:3,   grPerStuk:100, pricePerKg:14.99 },
+  { emoji:'🍗', name:'Kipdijen (niet gemarineerd)', kg:5,   grPerStuk:130, pricePerKg:7.50  },
+  { emoji:'🌭', name:'Mergueze',                    kg:3,   grPerStuk:75,  pricePerKg:null  },
+  { emoji:'🍗', name:'Platte kippenvleugels',       kg:5,   grPerStuk:100, pricePerKg:7.99  },
+];
+
+function updateCalc() {
+  const guests = parseInt(document.getElementById('guestSlider').value);
+  document.getElementById('guestDisplay').textContent = guests;
+
+  const tbody = document.getElementById('meatRows');
+  let totalStuks = 0, totalKg = 0, totalKost = 0;
+
+  tbody.innerHTML = meats.map((m, i) => {
+    const kg = m.kg;
+    const stuks = Math.round((kg * 1000) / m.grPerStuk);
+    const stuksPerP = (stuks / guests).toFixed(1);
+    const cost = m.pricePerKg ? kg * m.pricePerKg : null;
+
+    totalStuks += stuks;
+    totalKg += kg;
+    if (cost) totalKost += cost;
+
+    const costStr = cost
+      ? `<span class="calc-cost-val">€${cost.toFixed(2)}</span>`
+      : `<span class="cost-unknown-val">? opvragen</span>`;
+
+    return `<tr>
+      <td><strong>${m.emoji} ${m.name}</strong></td>
+      <td>
+        <div class="stuks-control">
+          <button class="stuks-btn" onclick="changeKg(${i},-0.5)">−</button>
+          <span class="stuks-val" id="kg-${i}" style="min-width:42px">${kg} kg</span>
+          <button class="stuks-btn" onclick="changeKg(${i},+0.5)">+</button>
+        </div>
+      </td>
+      <td style="text-align:center">
+        <strong>~${stuks}</strong> stuks<br>
+        <small style="color:var(--text-muted)">${stuksPerP}/persoon</small>
+      </td>
+      <td style="text-align:right;color:var(--text-muted)">${m.pricePerKg ? '€'+m.pricePerKg.toFixed(2) : '—'}</td>
+      <td style="text-align:right">${costStr}</td>
+    </tr>`;
+  }).join('');
+
+  const totalPerP = ((totalKg / guests) * 1000).toFixed(0);
+  const warning = totalKg / guests > 0.5
+    ? `<span style="color:var(--orange);font-size:0.75rem">⚠️ ${totalPerP}g/p — royaal!</span>`
+    : '';
+
+  tbody.innerHTML += `<tr style="background:var(--yellow-light);font-weight:800">
+    <td><strong>Totaal</strong></td>
+    <td style="text-align:center"><strong>${totalKg} kg</strong><br><small style="font-weight:400;color:var(--text-muted)">${totalPerP}g per persoon ${warning}</small></td>
+    <td style="text-align:center"><strong>~${totalStuks} stuks</strong><br><small style="font-weight:400;color:var(--text-muted)">${(totalStuks/guests).toFixed(1)} stuks/p</small></td>
+    <td></td>
+    <td style="text-align:right"><strong style="color:var(--green)">€${totalKost.toFixed(2)}</strong><br><small style="font-weight:400;color:var(--text-muted)">excl. mergueze</small></td>
+  </tr>`;
+
+  document.getElementById('sumStuks').textContent = '~' + totalStuks + ' stuks (' + (totalStuks/guests).toFixed(1) + '/p)';
+  document.getElementById('sumKg').textContent = totalKg + ' kg (' + totalPerP + 'g/p)';
+  document.getElementById('sumKost').textContent = '€' + totalKost.toFixed(2) + ' (excl. mergueze)';
+}
+
+function changeKg(idx, delta) {
+  meats[idx].kg = Math.max(0, Math.round((meats[idx].kg + delta) * 10) / 10);
+  document.getElementById('kg-' + idx).textContent = meats[idx].kg + ' kg';
+  updateCalc();
+  saveState();
+}
+
+function toggleRecipe(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.r-arrow');
+  body.classList.toggle('open');
+  if (arrow) arrow.classList.toggle('open');
+}
+
+updateCalc();
+
+(async () => {
+  await loadState();
+  updateCalc();
+  renderTodos();
+  renderPersonTasks();
+})();
+</script>
+</body>
+</html>
