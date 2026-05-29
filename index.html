@@ -195,6 +195,7 @@
   .person-mama { background: #fce4ec; color: #880e4f; }
   .person-mimi { background: #f3e5f5; color: #6a1b9a; }
   .person-both { background: linear-gradient(90deg, var(--yellow-light), var(--blue-light)); color: var(--text); border: 1px solid var(--border); }
+  .person-papa { background: #fff3e0; color: #e65100; border: 1px solid #ffcc80; }
 
   /* TODO */
   .todo-list { display: flex; flex-direction: column; gap: 9px; }
@@ -469,6 +470,7 @@
   .avatar-big-mama { background: linear-gradient(135deg, #fce4ec, #f48fb1); color: #880e4f; }
   .avatar-big-mimi { background: linear-gradient(135deg, #f3e5f5, #ce93d8); color: #6a1b9a; }
   .avatar-big-ahmed { background: linear-gradient(135deg, #e8f5e9, #81c784); color: #2e7d32; }
+  .avatar-big-papa { background: linear-gradient(135deg, #fff3e0, #ffcc80); color: #e65100; }
   .person-name { font-size: 1.15rem; font-weight: 900; }
   .person-role { font-size: 0.8rem; color: var(--text-muted); }
   .person-tasks { padding: 16px 22px; display: flex; flex-direction: column; gap: 10px; }
@@ -575,7 +577,7 @@
 <div id="tab-personen" class="section">
   <div class="section-header">
     <h2>👤 Taken per persoon</h2>
-    <span class="count-badge">5 mensen</span>
+    <span class="count-badge">6 mensen</span>
   </div>
 
   <!-- MARYAM -->
@@ -636,6 +638,18 @@
       </div>
     </div>
     <div class="person-tasks" id="ptasks-ahmed"></div>
+  </div>
+
+  <!-- PAPA -->
+  <div class="person-block">
+    <div class="person-block-header">
+      <div class="person-avatar-big avatar-big-papa">👨</div>
+      <div>
+        <div class="person-name">Papa</div>
+        <div class="person-role">Maryam's papa — tent opzetten dag voor het feest</div>
+      </div>
+    </div>
+    <div class="person-tasks" id="ptasks-papa"></div>
   </div>
 
   <div style="background:var(--blue-light); border:1.5px solid var(--blue); border-radius:14px; padding:16px 20px; font-size:0.85rem; color:var(--blue-dark); margin-top:6px;">
@@ -1447,6 +1461,12 @@ const todos = [
   { id:23, title:'🧊 IJsblokjes halen', urgency:'later', person:'maryam', personLabel:'Maryam', note:'Dag ervoor — veel nodig voor dranken + frigobox', done:false },
   { id:24, title:'🔥 BBQ aansteken (-2u voor aanvang)', urgency:'later', person:'alessio', personLabel:'Alessio', note:'Op temperatuur laten komen', done:false },
   { id:25, title:'✅ Gastenlijst bevestigd — 24 personen', urgency:'done', person:'maryam', personLabel:'Maryam', note:'22 volwassenen + 2 kinderen, definitief', done:true },
+  { id:28, title:'🥩 Vlees halen bij Yildrim', urgency:'later', person:'alessio', personLabel:'Alessio', note:'Dag voor het feest — ~8,6 kg totaal', done:false },
+  { id:29, title:'🛒 Colruyt + ijsblokjes (CASTLE ICE)', urgency:'later', person:'alessio', personLabel:'Alessio', note:'Dag voor het feest — 8 zakken × 2kg ijsblokjes', done:false },
+  { id:30, title:'🏕️ Tent opzetten (Alessio + Papa)', urgency:'later', person:'alessio', personLabel:'Alessio + Papa', note:'Dag voor het feest — samen opstellen', done:false },
+  { id:31, title:'🍞 Broodjes halen bij Erpa', urgency:'later', person:'alessio', personLabel:'Alessio', note:'Dag voor het feest — ±36–48 stuks', done:false },
+  { id:32, title:'🥗 Groentjes snijden (namiddag)', urgency:'later', person:'mama', personLabel:'Mama + Mimi', note:'Dag voor het feest — samen in de namiddag', done:false },
+  { id:33, title:'🥩 Vlees voorbereiden (eventueel)', urgency:'later', person:'mama', personLabel:'Mama + Mimi', note:'Dag voor het feest — marinade / klaarzetten indien nodig', done:false },
 ];
 
 // Per-person tasks
@@ -1470,18 +1490,29 @@ const personTasks = {
     { id:'a3', title:'🛒 2 hoge cocktailtafels kopen', urgency:'normal', note:'IKEA, Action of Brico', done:false },
     { id:'a4', title:'🏕️ Tent opzetten + opstelling plannen', urgency:'normal', note:'Loungezone + eet + staanzone', done:false },
     { id:'a5', title:'🔥 BBQ aansteken (-2u voor aanvang)', urgency:'later', note:'Op temperatuur laten komen', done:false },
+    { id:'a6', title:'🥩 Vlees halen bij Yildrim', urgency:'later', note:'Dag voor het feest — ~8,6 kg totaal', done:false },
+    { id:'a7', title:'🛒 Colruyt — inkoop + ijsblokjes (CASTLE ICE)', urgency:'later', note:'Dag voor het feest — 8 zakken × 2kg ijsblokjes + eventuele boodschappen', done:false },
+    { id:'a8', title:'🏕️ Tent helpen opzetten met Papa', urgency:'later', note:'Dag voor het feest — samen met papa opstellen', done:false },
+    { id:'a9', title:'🍞 Broodjes halen bij Erpa', urgency:'later', note:'Dag voor het feest — ±36–48 stuks', done:false },
   ],
   mama: [
     { id:'m1', title:'🪑 Stoelen uitlenen aan Maryam', urgency:'soon', note:'Checken hoeveel beschikbaar. Nodig: max ~15 stoelen totaal (ook Mimi vraagt)', done:false },
     { id:'m2', title:'🍽️ Eventueel borden/bestek uitlenen', urgency:'normal', note:'Als Maryam kiest voor lenen i.p.v. wegwerp', done:false },
+    { id:'m3', title:'🥗 Groentjes helpen snijden (namiddag)', urgency:'later', note:'Dag voor het feest — samen met Mimi in de namiddag', done:false },
+    { id:'m4', title:'🥩 Vlees voorbereiden (eventueel)', urgency:'later', note:'Dag voor het feest — indien nodig helpen met marinade / klaarzetten', done:false },
   ],
   mimi: [
     { id:'mi1', title:'🪑 Stoelen uitlenen aan Maryam', urgency:'soon', note:'Zoveel mogelijk — samen met mama aanvullen tot ~15 stoelen', done:false },
     { id:'mi2', title:'🧊 Frigobox meebrengen', urgency:'soon', note:'Voor koeling van drankjes tijdens het feest. Maryam voorziet ijsblokjes.', done:false },
     { id:'mi3', title:'🌬️ Waaier/ventilator meebrengen', urgency:'soon', note:'Tegen de vliegen buiten — héél handig bij een BBQ!', done:false },
+    { id:'mi4', title:'🥗 Groentjes helpen snijden (namiddag)', urgency:'later', note:'Dag voor het feest — samen met Mama in de namiddag', done:false },
+    { id:'mi5', title:'🥩 Vlees voorbereiden (eventueel)', urgency:'later', note:'Dag voor het feest — indien nodig helpen met marinade / klaarzetten', done:false },
   ],
   ahmed: [
     { id:'ah1', title:'🔊 Speaker(s) meebrengen', urgency:'soon', note:'Sony speaker(s) — koppelen in party mode met Maryam\'s speaker testen', done:false },
+  ],
+  papa: [
+    { id:'pa1', title:'🏕️ Tent opzetten samen met Alessio', urgency:'later', note:'Dag voor het feest', done:false },
   ],
 };
 
